@@ -1,0 +1,12 @@
+.dashboard-items {
+    height: 63px;
+    width: 100%;
+    padding: 25px;
+    font-size: 20px;
+    text-align: left;
+    align-content: center;
+    background: #f4f1fa;
+    font-weight: bold;
+    border-radius: 15px;
+    margin-top: 10px;
+}

@@ -1,0 +1,222 @@
+/* The Modal (background) */
+.modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    padding-top: 100px;
+    /* Location of the box */
+    padding-bottom: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    background-color: #fefefe;
+    margin: auto;
+    border: 1px solid #888;
+    width: 80%;
+    padding: 15px;
+}
+
+/* The Close Button */
+.close,
+.opClose {
+    width: fit-content;
+    height: fit-content;
+    align-self: flex-end;
+    color: #aaaaaa;
+    float: right;
+    margin: 20px;
+    font-size: 28px;
+    font-weight: bold;
+
+}
+
+.close:hover,
+.close:focus,
+.opClose:hover,
+.opClose:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-content>div {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-content: center;
+    margin-bottom: 50px;
+}
+
+.modal-content>div>h2 {
+    text-align: left;
+    margin: 15px;
+}
+
+.modal-content>div>form>h3 {
+    margin-bottom: 40px;
+}
+
+.modal-content>div>img {
+    align-self: center;
+    height: 300px;
+    width: fit-content;
+    max-width: 100%;
+    max-height: 300px;
+    border: 1px solid black;
+}
+
+#busopImg {
+    align-self: center;
+    height: 300px;
+    width: fit-content;
+    max-width: 100%;
+    max-height: 300px;
+    border: 1px solid black;
+}
+
+input[type="file"] {
+    align-self: center;
+    margin-top: 15px;
+}
+
+.modal-content>div>form {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 50px;
+}
+
+.modal-content>div>form>#busopUserPhoto {
+    align-self: center;
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    border: 2px solid white;
+}
+
+.bus-op-form-row {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+}
+
+.bus-op-column1 {
+    display: flex;
+    justify-content: flex-start;
+    width: 20%;
+    margin: 5px 15px 5px 15px;
+}
+
+.bus-op-column2 {
+    display: flex;
+    justify-content: flex-start;
+    width: 80%;
+    padding-right: 100px;
+    margin: 5px 15px 5px 15px;
+}
+
+.bus-op-column1 label {
+    font-weight: bold;
+    margin-left: 50px;
+}
+
+.bus-op-column2 input {
+    width: 100%;
+    border: 1px solid #000;
+}
+
+.bus-op-column2 textarea {
+    width: 100%;
+    height: 100px;
+    border: 1px solid #000;
+}
+
+#saveBusopBtn {
+    height: fit-content;
+    width: 300px;
+    align-self: center;
+    font-size: 17px;
+    color: white;
+    padding: 10px;
+    margin-top: 40px;
+    border: 1px solid lightgrey;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    background: #9488a6;
+    cursor: pointer;
+}
+
+#saveBusopBtn:hover {
+    background-color: #0056b3;
+}
+
+.divider {
+    align-self: center;
+    margin: 15px 0px 30px 0px;
+    width: 100%;
+    border-top: 1px solid #bbb;
+}
+
+.bus-op-detail {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    width: 100%;
+    padding: 15px;
+}
+
+.bus-op-detail-row {
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.bus-op-detail-row label {
+    min-width: 100px;
+    width: fit-content;
+    align-self: flex-start;
+    margin: 10px;
+}
+
+.bus-op-detail-row span {
+    min-width: 100px;
+    width: fit-content;
+    align-self: flex-start;
+    margin: 10px;
+    overflow: hidden;
+    font-weight: bold;
+}
+
+#deleteopBtn {
+    height: fit-content;
+    width: fit-content;
+    outline: none;
+    font-size: 17px;
+    color: white;
+    padding: 10px 15px 10px 15px;
+    margin: 10px;
+    border: 1px solid lightgrey;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    background: red;
+    cursor: pointer;
+}
