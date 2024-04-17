@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BusYan Bus Cooperative</title>
+    <title>BusYan Bus Operator</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link rel="stylesheet" href="./styles/manage-user.css" />
     <link rel="stylesheet" href="./styles/searchbar.css" />
@@ -31,27 +31,24 @@
                 <label for="user role">Loading...</label>
             </div>
 
-            <ul>
+            <ul id="sidebarUl">
+                <li>
+                    <a href="#" data-target="dashboard"><i class="fas fa-light fa-table-cells"></i><span>Dashboard</span></a>
+                </li>
+                <li >
+                    <a href="#" data-target="notification"><i class="fas fa-regular fa-bell "></i><span>Notification</span></a>
+                </li>
+                <li >
+                    <a href="#" data-target="manage-bus"><i class="fas a-solid fa-bus-simple "></i></i><span  >Manage Bus</span></a>
+                </li>
+                <li >
+                    <a href="#" data-target="manage-people"><i class="fas fa-light fa-user-group "></i></i><span >Manage People</span></a>
+                </li>
+                <li >
+                    <a href="#" data-target="bus-schedule"><i class="fas fa-regular fa-calendar-days "></i></i><span >Bus Schedule</span></a>
+                </li>
                 <li class="selected-menu">
-                    <a href="#" data-target="dashboard">
-                        <i class="fas fa-light fa-table-cells selected-menu-text"></i>
-                        <span class="selected-menu-text">Dashboard</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" data-target="notification"><i class="fas fa-regular fa-bell"></i><span>Notification</span></a>
-                </li>
-                <li>
-                    <a href="#" data-target="manage-bus"><i class="fas a-solid fa-bus-simple"></i></i><span>Manage Bus</span></a>
-                </li>
-                <li>
-                    <a href="#" data-target="manage-people"><i class="fas fa-light fa-user-group"></i></i><span>Manage People</span></a>
-                </li>
-                <li>
-                    <a href="#" data-target="bus-schedule"><i class="fas fa-regular fa-calendar-days"></i></i><span>Bus Schedule</span></a>
-                </li>
-                <li>
-                    <a href="#" data-target="manage-job"><i class="fas fa-solid fa-briefcase"></i></i><span>Manage Job</span></a>
+                    <a href="#" data-target="manage-job"><i class="fas fa-solid fa-briefcase selected-menu-text"></i></i><span class="selected-menu-text">Manage Job</span></a>
                 </li>
                 <li>
                     <a href="#" data-target="applicants"><i class="fas fa-solid fa-user-plus"></i><span>Applicants</span></a>
@@ -74,7 +71,30 @@
                 </a>
             </div>
         </div>
+
+        <div class="content-container">
+            <div class="manage-user content">
+                <h1 class="header">Manage Job</h1>
+                <div class="container">
+                  <div class="card" style="display: flex; flex-direction: column;">
+        
+                    <div class="wrap">
+                      <div class="search">
+                        <input id="searchInput" type="text" class="searchTerm" placeholder="Search" />
+                        <ul id="searchResults"></ul>        
+                      </div>
+                    </div>       
+
+                  </div>
+                </div>
+
+            </div>
+        </div>
     </div>
+
+    <script src="./js/sidebar.js" type="module"></script>
+    <script src="./js/logout.js" type="module"></script>
+
 </body>
 
 </html>

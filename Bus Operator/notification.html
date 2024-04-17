@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BusYan Bus Operator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="./styles/manage-user.css" />
+    <link rel="stylesheet" href="./styles/searchbar.css" />
+    <link rel="stylesheet" href="./styles/admin.css" />
+    <link rel="stylesheet" href="./styles/profile.css" />
+    <link rel="stylesheet" href="./styles/modal.css" />
+    <link rel="stylesheet" href="./styles/dashboard.css" />
+    <link rel="stylesheet" href="./styles/notification.css" />
+    <link rel="stylesheet" href="/Common/common.css" />
+</head>
+
+<body>
+    <div class="loader-container">
+        <div class="loader"></div>
+    </div>
+
+    <div class="wrapper">
+        <div class="sidebar">
+            <h2>BusYan</h2>
+
+            <div class="user-detail">
+                <img src="./images/profile.png" alt="profile" />
+                <label for="user name"><strong>Loading...</strong></label>
+                <label for="user role">Loading...</label>
+            </div>
+
+            <ul id="sidebarUl">
+                <li>
+                    <a href="#" data-target="dashboard"><i class="fas fa-light fa-table-cells"></i><span>Dashboard</span></a>
+                </li>
+                <li class="selected-menu">
+                    <a href="#" data-target="notification"><i class="fas fa-regular fa-bell selected-menu-text"></i><span class="selected-menu-text">Notification</span></a>
+                </li>
+                <li>
+                    <a href="#" data-target="manage-bus"><i class="fas a-solid fa-bus-simple"></i></i><span>Manage Bus</span></a>
+                </li>
+                <li>
+                    <a href="#" data-target="manage-people"><i class="fas fa-light fa-user-group"></i></i><span>Manage People</span></a>
+                </li>
+                <li>
+                    <a href="#" data-target="bus-schedule"><i class="fas fa-regular fa-calendar-days"></i></i><span>Bus Schedule</span></a>
+                </li>
+                <li>
+                    <a href="#" data-target="manage-job"><i class="fas fa-solid fa-briefcase"></i></i><span>Manage Job</span></a>
+                </li>
+                <li>
+                    <a href="#" data-target="applicants"><i class="fas fa-solid fa-user-plus"></i><span>Applicants</span></a>
+                </li>
+                <li>
+                    <a href="#" data-target="profile"><i class="fas fa-regular fa-user"></i><span>Profile</span></a>
+                </li>
+                <li>
+                    <a href="#" data-target="about-us"><i class="fas fa-regular fa-circle-info"></i><span>About Us</span></a>
+                </li>
+                <li>
+                    <a href="#" data-target="help-center"><i class="fas fa-solid fa-circle-question"></i></i><span>Help Center</span></a>
+                </li>
+            </ul>
+
+            <div class="logout">
+                <a href="#" data-target="logout" id="logoutBtn">
+                    <i class="fas fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="content-container">
+            <div class="manage-user content">
+                <h1 class="header">Notifications</h1>
+                <div class="container">
+                  <div class="card" style="display: flex; flex-direction: column;">
+             
+    
+                  </div>
+                </div>
+    
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/sidebar.js" type="module"></script>
+    <script src="./js/logout.js" type="module"></script>
+
+</body>
+
+</html>

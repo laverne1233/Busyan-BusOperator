@@ -1,4 +1,4 @@
-import { DBPaths } from '/Bus Cooperative/js/DB.js';
+import { DBPaths } from '/Bus Operator/js/DB.js';
 import firebaseConfig from '/CONFIG.js';
 
 firebase.initializeApp(firebaseConfig);
@@ -14,7 +14,7 @@ function loginUser(event) {
 
     let accountExists = false; // Flag to track if the account exists
 
-    const userRef = database.ref(`${DBPaths.BUS_COOP}`);
+    const userRef = database.ref(`${DBPaths.BUS_OPS}`);
     const username = usernameInput.value;
     const password = passwordInput.value;
 
@@ -27,7 +27,7 @@ function loginUser(event) {
 
             if (username === dbEmail && password == dbPassword) {
                 saveLoginTime(userKey, data);
-                window.location.href = '/Bus Cooperative/bus-coop.html'; // Redirect if credentials match
+                window.location.href = '/Bus Operator/dashboard.html'; // Redirect if credentials match
                 accountExists = true; // Set flag to true if account exists
                 data["key"] = userKey;
                 console.log(data);
@@ -49,7 +49,7 @@ function saveLoginTime(userId, data) {
     const loginDetailsData = {
         id: userId,
         fullName: data.fullName,
-        role: 'cooperative',
+        role: 'operator',
         loginDateTime: new Date().toISOString()
     }
 
