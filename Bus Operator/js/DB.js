@@ -7,5 +7,7 @@ export const DBPaths = {
     PASSENGERS: 'Passengers',
     EMPLOYEES: 'Employees',
     ADMIN: 'Admin',
-    LOGIN_NOTIF: 'LoginNotification'
+    LOGIN_NOTIF: 'LoginNotification',
+    LIVE_DRIVERS: 'LiveDrivers',
+    LIVE_PASSENGERS: 'LivePassengers',
 }

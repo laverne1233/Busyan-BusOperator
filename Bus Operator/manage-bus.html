@@ -93,15 +93,16 @@
                             <div class="search">
                                 <div class="data-filter">
                                     <input type="radio" checked="true" id="bus" name="data" />
-                                    <label for="bus">Bus</label>
+                                    <label for="bus">BUS</label>
                                     <input type="radio" id="bus-tracking" name="data" />
-                                    <label for="bus-tracking">Bus Tracking</label>
+                                    <label for="bus-tracking">BUS TRACKING</label>
                                     <span class="glider"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="bus-content" style="overflow: scroll;">
-                            <input id="searchInput" type="text" class="searchTerm" placeholder="Search by Plate No." />
+                            <input id="searchBusInput" type="text" class="searchTerm"
+                                placeholder="Search Bus by Plate No." />
                             <button class="button" id="addBusopBtn"><i class="fa-solid fa-plus"></i>Add New Bus</button>
                             <table id="bus-table">
                             </table>
@@ -148,29 +149,22 @@
                     <button id="saveBusBtn" type="submit">Save</button>
                 </div>
             </form>
-            
+
 
 
         </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/3.7.4/firebase.js "></script>
-
     <script src="./js/sidebar.js" type="module"></script>
     <script src="./js/logout.js" type="module"></script>
     <script src="./js/manageBus.js" type="module"></script>
-    <script>
-        function myMap() {
-            var mapProp = {
-                center: new google.maps.LatLng(51.508742, -0.120850),
-                zoom: 5,
-            };
-            var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-        }
+    <script async 
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClxrx1JHZKzdnoQpeGU0xdhSe4Szn9LX0&loading=async&callback=initMap">
     </script>
 
-    <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAuJOzKXlat5i1JIBscGuxOJKVfHHjP9Y&callback=myMap"></script>
+
+
 </body>
 
 </html>

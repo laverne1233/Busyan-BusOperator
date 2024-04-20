@@ -1,6 +1,8 @@
 import firebaseConfig from '/CONFIG.js';
 import { DBPaths } from '/Bus Operator/js/DB.js';
 import { convertToPascal, getCurrentDateTimeInMillis } from '/Bus Operator/utils/Utils.js';
+// const { Map } = await google.maps.importLibrary('maps');
+// const { AdvancedMarkerElement } = await google.maps.importLibrary('marker');
 
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
@@ -13,6 +15,7 @@ const busTrackingRadio = document.getElementById('bus-tracking');
 const busContent = document.querySelector('.bus-content');
 const busTrackingContent = document.querySelector('.bus-tracking-content');
 
+const searchBusInput = document.getElementById('searchBusInput');
 const form = document.getElementById('addBusForm');
 const busCode = document.getElementById('busCode');
 const startPoint = document.getElementById('startPoint');
@@ -34,18 +37,39 @@ document.addEventListener('DOMContentLoaded', init);
 form.addEventListener('submit', saveBusData);
 addBusopBtn.addEventListener('click', addBus)
 opCloseBtn.addEventListener('click', hideAddBusForm)
+searchBusInput.addEventListener('input', handleSearchInput);
 
 function init() {
     document.querySelectorAll('.data-filter input[type="radio"]').forEach(radio => {
         radio.addEventListener('change', handleRadioButtonChange);
     });
 
-    generateBuses()
+    generateBuses();
+    // Call initMap function to start the process
+    initMap();
 };
+
+function handleSearchInput() {
+    generateBusesTableHeader();
+
+    const searchTerm = searchBusInput.value.toLowerCase().trim();
+
+    // Filter data based on search term
+    const results = busDriverArray.filter(item => item.plateNumber.toLowerCase().includes(searchTerm));
+    // Render search results
+    renderResults(results);
+}
+
+function renderResults(results) {
+
+    results.forEach(result => {
+
+        generateBusesTables(result);
+    });
+}
 
 function generateBuses() {
 
-    busTable.innerHTML = '';
     generateBusesTableHeader();
 
     const busDriverRef = database.ref(`${DBPaths.BUS_DETAILS}`);
@@ -67,7 +91,7 @@ function generateBuses() {
 }
 
 function generateBusesTableHeader() {
-
+    busTable.innerHTML = '';
     const newRow = document.createElement("tr");
     const columns = ["ID No.", "Bus Code", "Start Point", "End Point", "Plate Number", "Actions"];
 
@@ -156,13 +180,13 @@ function saveDataInDb() {
 
 
     if (action === 'Add') {
-        const id = getCurrentDateTimeInMillis();  
+        const id = getCurrentDateTimeInMillis();
         const BusDetails = {
             idNo: id,
             busCode: busCode.value,
             startPoint: startPoint.value,
             endPoint: endPoint.value,
-            plateNumber:  plateNumber.value.toUpperCase(),
+            plateNumber: plateNumber.value.toUpperCase(),
             datetimeAdded: new Date().toISOString()
         };
 
@@ -181,13 +205,13 @@ function saveDataInDb() {
     }
 
     if (action === 'Edit') {
-        const id = busId;    
+        const id = busId;
 
         const BusDetails = {
             busCode: busCode.value,
             startPoint: startPoint.value,
             endPoint: endPoint.value,
-            plateNumber:  plateNumber.value.toUpperCase(),
+            plateNumber: plateNumber.value.toUpperCase(),
         };
 
         const busDetailsRef = firebase.database().ref(`${DBPaths.BUS_DETAILS}/${id}`);
@@ -199,12 +223,13 @@ function saveDataInDb() {
             })
             .catch(error => {
                 console.error('Error updating bus!');
-            });    }
+            });
+    }
 
     hideLoader();
 }
 
-function addBus(){
+function addBus() {
     action = 'Add';
     showAddBusForm();
 }
@@ -253,7 +278,7 @@ function handleRadioButtonChange() {
     }
 }
 
-function showAddBusForm() {    
+function showAddBusForm() {
     addBusFormModal.style.display = 'block';
 }
 
@@ -281,3 +306,81 @@ window.onclick = function (event) {
         hideAddBusForm();
     }
 }
+
+
+
+//ABOUT MAPS
+const googleMap = document.getElementById("googleMap");
+const bounds = new google.maps.LatLngBounds();
+let allCoor = [];
+const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+
+async function initMap() {
+    try {
+        // Get live driver and passenger coordinates
+        await getLiveCoordinates(database.ref(`${DBPaths.LIVE_DRIVERS}`), 'Driver');
+        await getLiveCoordinates(database.ref(`${DBPaths.LIVE_PASSENGERS}`), 'Passenger');
+
+        // Check if any coordinates retrieved
+        if (!allCoor.length) {
+            console.log("No live coordinates found");
+            return; // Exit if no coordinates
+        }
+
+        const map = await createMap(); // Create map after coordinates are retrieved
+        addMarkersToMap(map); // Add markers to the created map
+    } catch (error) {
+        console.error("Error initializing map:", error);
+    }
+}
+
+async function createMap() {
+    const { Map } = await google.maps.importLibrary("maps");
+
+    const mapProp = {
+        center: new google.maps.LatLng(9.3338, 123.8941), // Default center
+        zoom: 15,
+        disableDefaultUI: true,
+        mapId: 'BUS_MAP'
+    };
+
+    return new Map(googleMap, mapProp);
+}
+
+function addMarkersToMap(map) {
+    allCoor.forEach(function (position) {
+        putMarker(map, position);
+        bounds.extend(position);
+    });
+
+    map.fitBounds(bounds);
+}
+
+function putMarker(map, myCenter) {
+    new AdvancedMarkerElement({
+        position: myCenter,
+        map: map
+    });
+}
+
+function getLiveCoordinates(dataRef, dataType) {
+    const liveElements = []; // Assuming liveElements is where you store retrieved data
+
+    return dataRef.once('value').then((snapshot) => {
+        snapshot.forEach((dataSnapshot) => {
+            const dataKey = dataSnapshot.key;
+            const dataValue = dataSnapshot.val();
+            dataValue["key"] = dataKey;
+            liveElements.push(dataValue);
+
+            const coordinates = {
+                lat: dataValue.lattitude, // Assuming lattitude exists, check for typos
+                lng: dataValue.longitude, // Assuming longitude exists
+                role: dataType
+            };
+
+            allCoor.push(coordinates);
+        });
+    });
+}
+
