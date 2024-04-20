@@ -45,8 +45,15 @@ function init() {
     });
 
     generateBuses();
-    // Call initMap function to start the process
-    initMap();
+    
+    setInterval(function () {
+        // Call initMap function to start the process
+        if (busTrackingContent && window.getComputedStyle(busTrackingContent).display !== 'none') {
+            // Call initMap only if the parent div is displayed
+            initMap();
+        }
+    }, 25000);
+
 };
 
 function handleSearchInput() {
@@ -319,7 +326,7 @@ async function initMap() {
     try {
         // Get live driver and passenger coordinates
         await getLiveCoordinates(database.ref(`${DBPaths.LIVE_DRIVERS}`), 'Driver');
-        await getLiveCoordinates(database.ref(`${DBPaths.LIVE_PASSENGERS}`), 'Passenger');
+        // await getLiveCoordinates(database.ref(`${DBPaths.LIVE_PASSENGERS}`), 'Passenger');
 
         // Check if any coordinates retrieved
         if (!allCoor.length) {
@@ -348,18 +355,43 @@ async function createMap() {
 }
 
 function addMarkersToMap(map) {
-    allCoor.forEach(function (position) {
-        putMarker(map, position);
-        bounds.extend(position);
+    allCoor.forEach(function (data) {
+        putMarker(map, data);
+        bounds.extend(data);
     });
 
     map.fitBounds(bounds);
 }
 
-function putMarker(map, myCenter) {
-    new AdvancedMarkerElement({
-        position: myCenter,
-        map: map
+function putMarker(map, data) {
+
+    const markerImg = document.createElement("img");
+    markerImg.style.width = '35px'; // Set desired width
+    markerImg.style.height = '35px'; // Set desired height
+
+    let infoContent;
+
+    if (data.role === 'Driver') {
+        markerImg.src = '/Bus Operator/images/bus_marker.png'
+        infoContent = ` \n Bus Code: ${data.dataValue.busCode} |
+                        \n Plate Number: ${data.dataValue.plateNumber}`
+    }
+    else if (data.role === 'Passenger') {
+        markerImg.src = '/Bus Operator/images/passenger_marker.png'
+    }
+
+    const marker = new AdvancedMarkerElement({
+        position: data,
+        map: map,
+        content: markerImg
+    });
+
+    const infowindow = new google.maps.InfoWindow({
+        content: infoContent
+    });
+
+    google.maps.event.addListener(marker, 'click', function () {
+        infowindow.open(map, marker);
     });
 }
 
@@ -374,6 +406,7 @@ function getLiveCoordinates(dataRef, dataType) {
             liveElements.push(dataValue);
 
             const coordinates = {
+                dataValue: dataValue,
                 lat: dataValue.lattitude, // Assuming lattitude exists, check for typos
                 lng: dataValue.longitude, // Assuming longitude exists
                 role: dataType

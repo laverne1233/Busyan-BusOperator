@@ -1,7 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
 .search {
-  width: 70%;
+  width: 100%;
   height: fit-content;
   display: flex;
   flex-direction: column;

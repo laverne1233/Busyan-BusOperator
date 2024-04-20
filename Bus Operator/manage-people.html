@@ -6,13 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BusYan Bus Operator</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-    <link rel="stylesheet" href="./styles/manage-user.css" />
+    <link rel="stylesheet" href="./styles/manage-people.css" />
     <link rel="stylesheet" href="./styles/searchbar.css" />
     <link rel="stylesheet" href="./styles/admin.css" />
     <link rel="stylesheet" href="./styles/profile.css" />
     <link rel="stylesheet" href="./styles/modal.css" />
     <link rel="stylesheet" href="./styles/dashboard.css" />
     <link rel="stylesheet" href="./styles/notification.css" />
+    <link rel="stylesheet" href="./styles/table.css" />
     <link rel="stylesheet" href="/Common/common.css" />
 </head>
 
@@ -74,18 +75,54 @@
 
         <div class="content-container">
             <div class="manage-user content">
-                <h1 class="header">Manage People</h1>
+                <h1 class="header">Manage Bus</h1>
                 <div class="container">
-                  <div class="card" style="display: flex; flex-direction: column;">
-        
-                    <div class="wrap">
-                      <div class="search">
-                        <input id="searchInput" type="text" class="searchTerm" placeholder="Search" />
-                        <ul id="searchResults"></ul>        
-                      </div>
-                    </div>       
+                    <div class="card" style="display: flex; flex-direction: column;">
 
-                  </div>
+                        <div class="wrap">
+                            <div class="search">
+                                <div class="data-filter">
+
+                                    <input type="radio" checked="true" id="employee" name="data" />
+                                    <label for="employee">EMPLOYEE</label>
+
+                                    <input type="radio" id="status" name="data" />
+                                    <label for="status">EMPLOYEE STATUS</label>
+
+                                    <input type="radio" id="account" name="data" />
+                                    <label for="account">USER'S ACCOUNT</label>
+                                    
+                                    <span class="glider"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="employee-content" style="overflow: scroll;">
+                            <input id="searchBusInput" type="text" class="searchTerm"
+                                placeholder="Search" />
+                            <button class="manage-people-add-button" id="addBusopBtn"><i class="fa-solid fa-plus"></i>Add New Bus</button>
+                            <table id="bus-table">
+                            </table>
+                        </div>
+
+                        <div class="status-content" style="overflow: scroll; display: none;">
+                            <input id="searchBusInput" type="text" class="searchTerm"
+                                placeholder="Search" />
+                            <button class="manage-people-add-button" id="addBusopBtn"><i class="fa-solid fa-plus"></i>Add New Bus</button>
+                            <table id="bus-table">
+                            </table>
+                        </div>
+
+                        <div class="account-content" style="overflow: scroll; display: none;">
+                            <input id="searchBusInput" type="text" class="searchTerm"
+                                placeholder="Search" />
+                            <button class="manage-people-add-button" id="addBusopBtn"><i class="fa-solid fa-plus"></i>Add New Bus</button>
+                            <table id="bus-table">
+                            </table>
+                        </div>
+
+
+                    </div>
                 </div>
 
             </div>
