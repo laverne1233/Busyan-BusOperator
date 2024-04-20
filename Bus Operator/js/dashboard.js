@@ -28,8 +28,6 @@ function generateBusOperators() {
                 createBusDriversCard(opData);
             });
 
-            // generateChart(snapshot);
-            // Example usage:
             getSnapshotCounts((error, counts) => {
                 if (error) {
                     console.error("Error fetching snapshot counts:", error);

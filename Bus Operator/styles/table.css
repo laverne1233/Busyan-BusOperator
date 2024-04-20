@@ -1,0 +1,51 @@
+.edit {
+    color: #00b11c;
+  }
+  
+  .delete {
+    color: #ff0707;
+  }
+
+  #bus-table {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    overflow-y: auto;
+
+}
+
+#bus-table,
+#bus-table td,
+#bus-table th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#bus-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#bus-table tr:hover {
+    background-color: #ddd;
+}
+
+#bus-table th {
+    padding-top: 8px;
+    padding-bottom: 5px;
+    text-align: center;
+    background-color: #9488a6;
+    color: white;
+}
+
+#bus-table td>img {
+    width: 30px;
+    height: 30px;
+}
+
+#bus-table td {
+    text-align: center;
+}
+
+#bus-table td>a {
+    margin: 5px;
+}

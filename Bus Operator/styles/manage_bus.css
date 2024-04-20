@@ -1,0 +1,71 @@
+.data-filter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.data-filter input[id="bus-tracking"]:checked~.glider {
+    transform: translateX(50%);
+}
+
+.data-filter input[id="bus"]:checked~.glider {
+    transform: translateX(-50%);
+}
+
+.data-filter .glider {
+    position: absolute;
+    display: flex;
+    height: 2px;
+    width: 100%;
+    background-color: rgb(148, 136, 166);
+    z-index: 1;
+    transition: 0.25s ease-out;
+    bottom: -10px;
+}
+
+.data-filter input[type="radio"] {
+    position: absolute;
+    visibility: hidden;
+    display: none;
+}
+
+.data-filter input[type="radio"]:checked+label {
+    color: black;
+}
+
+.data-filter label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 18px;
+    width: calc(100% / 2);
+    cursor: pointer;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 31px;
+    transition: color 0.15s ease-in;
+    color: lightgray;
+}
+
+#addBusopBtn {
+    height: fit-content;
+    width: fit-content;
+    outline: none;
+    font-size: 12px;
+    color: white;
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid lightgrey;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    background: #9488a6;
+    cursor: pointer;
+  }
+  
+  #addBusopBtn:hover {
+    background-color: #0056b3;
+  }
+

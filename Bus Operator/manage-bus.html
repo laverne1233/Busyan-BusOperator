@@ -6,13 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BusYan Bus Operator</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-    <link rel="stylesheet" href="./styles/manage-user.css" />
+    <link rel="stylesheet" href="./styles/manage_bus.css" />
     <link rel="stylesheet" href="./styles/searchbar.css" />
     <link rel="stylesheet" href="./styles/admin.css" />
     <link rel="stylesheet" href="./styles/profile.css" />
     <link rel="stylesheet" href="./styles/modal.css" />
     <link rel="stylesheet" href="./styles/dashboard.css" />
     <link rel="stylesheet" href="./styles/notification.css" />
+    <link rel="stylesheet" href="./styles/table.css" />
     <link rel="stylesheet" href="/Common/common.css" />
 </head>
 
@@ -33,34 +34,44 @@
 
             <ul id="sidebarUl">
                 <li>
-                    <a href="#" data-target="dashboard"><i class="fas fa-light fa-table-cells"></i><span>Dashboard</span></a>
+                    <a href="#" data-target="dashboard"><i
+                            class="fas fa-light fa-table-cells"></i><span>Dashboard</span></a>
                 </li>
-                <li >
-                    <a href="#" data-target="notification"><i class="fas fa-regular fa-bell "></i><span>Notification</span></a>
+                <li>
+                    <a href="#" data-target="notification"><i
+                            class="fas fa-regular fa-bell "></i><span>Notification</span></a>
                 </li>
                 <li class="selected-menu">
-                    <a href="#" data-target="manage-bus"><i class="fas a-solid fa-bus-simple selected-menu-text"></i></i><span  class="selected-menu-text">Manage Bus</span></a>
+                    <a href="#" data-target="manage-bus"><i
+                            class="fas a-solid fa-bus-simple selected-menu-text"></i></i><span
+                            class="selected-menu-text">Manage Bus</span></a>
                 </li>
                 <li>
-                    <a href="#" data-target="manage-people"><i class="fas fa-light fa-user-group"></i></i><span>Manage People</span></a>
+                    <a href="#" data-target="manage-people"><i class="fas fa-light fa-user-group"></i></i><span>Manage
+                            People</span></a>
                 </li>
                 <li>
-                    <a href="#" data-target="bus-schedule"><i class="fas fa-regular fa-calendar-days"></i></i><span>Bus Schedule</span></a>
+                    <a href="#" data-target="bus-schedule"><i class="fas fa-regular fa-calendar-days"></i></i><span>Bus
+                            Schedule</span></a>
                 </li>
                 <li>
-                    <a href="#" data-target="manage-job"><i class="fas fa-solid fa-briefcase"></i></i><span>Manage Job</span></a>
+                    <a href="#" data-target="manage-job"><i class="fas fa-solid fa-briefcase"></i></i><span>Manage
+                            Job</span></a>
                 </li>
                 <li>
-                    <a href="#" data-target="applicants"><i class="fas fa-solid fa-user-plus"></i><span>Applicants</span></a>
+                    <a href="#" data-target="applicants"><i
+                            class="fas fa-solid fa-user-plus"></i><span>Applicants</span></a>
                 </li>
                 <li>
                     <a href="#" data-target="profile"><i class="fas fa-regular fa-user"></i><span>Profile</span></a>
                 </li>
                 <li>
-                    <a href="#" data-target="about-us"><i class="fas fa-regular fa-circle-info"></i><span>About Us</span></a>
+                    <a href="#" data-target="about-us"><i class="fas fa-regular fa-circle-info"></i><span>About
+                            Us</span></a>
                 </li>
                 <li>
-                    <a href="#" data-target="help-center"><i class="fas fa-solid fa-circle-question"></i></i><span>Help Center</span></a>
+                    <a href="#" data-target="help-center"><i class="fas fa-solid fa-circle-question"></i></i><span>Help
+                            Center</span></a>
                 </li>
             </ul>
 
@@ -76,27 +87,90 @@
             <div class="manage-user content">
                 <h1 class="header">Manage Bus</h1>
                 <div class="container">
-                  <div class="card" style="display: flex; flex-direction: column;">
-        
-                    <div class="wrap">
-                      <div class="search">
-                        <input id="searchInput" type="text" class="searchTerm" placeholder="Search" />
-                        <ul id="searchResults"></ul>        
-                      </div>
-                    </div>       
+                    <div class="card" style="display: flex; flex-direction: column;">
 
-                  </div>
+                        <div class="wrap">
+                            <div class="search">
+                                <div class="data-filter">
+                                    <input type="radio" checked="true" id="bus" name="data" />
+                                    <label for="bus">Bus</label>
+                                    <input type="radio" id="bus-tracking" name="data" />
+                                    <label for="bus-tracking">Bus Tracking</label>
+                                    <span class="glider"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bus-content" style="overflow: scroll;">
+                            <input id="searchInput" type="text" class="searchTerm" placeholder="Search by Plate No." />
+                            <button class="button" id="addBusopBtn"><i class="fa-solid fa-plus"></i>Add New Bus</button>
+                            <table id="bus-table">
+                            </table>
+                        </div>
+                        <div class="bus-tracking-content" style="display: none;">
+                            <div id="googleMap" style="width:100%;height:400px;"></div>
+
+                        </div>
+
+                    </div>
                 </div>
 
             </div>
         </div>
-
-        
     </div>
+
+    <div id="opModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div style="display: flex; flex-direction: row; width: 100%; justify-content: space-between;">
+                <span class="opClose">&times;</span>
+            </div>
+
+            <span class="modal-title">Bus Details</span>
+            <div class="divider"></div>
+            <form id="addBusForm">
+                <div class="bus-form-container">
+                    <div class="column">
+                        <!-- <label for="idNo">ID No:</label> -->
+                        <label for="busCode">Bus Code:</label>
+                        <label for="startPoint">Start Point:</label>
+                        <label for="endPoint">End Point:</label>
+                        <label for="plateNumber">Plate Number:</label>
+                    </div>
+                    <div class="column">
+                        <!-- <input type="text" id="idNo" name="idNo" required> -->
+                        <input type="text" id="busCode" name="busCode" required>
+                        <input type="text" id="startPoint" name="startPoint" required>
+                        <input type="text" id="endPoint" name="endPoint" required>
+                        <input type="text" id="plateNumber" name="plateNumber" required>
+                    </div>
+                </div>
+                <div>
+                    <button id="saveBusBtn" type="submit">Save</button>
+                </div>
+            </form>
+            
+
+
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/3.7.4/firebase.js "></script>
 
     <script src="./js/sidebar.js" type="module"></script>
     <script src="./js/logout.js" type="module"></script>
+    <script src="./js/manageBus.js" type="module"></script>
+    <script>
+        function myMap() {
+            var mapProp = {
+                center: new google.maps.LatLng(51.508742, -0.120850),
+                zoom: 5,
+            };
+            var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+        }
+    </script>
 
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAuJOzKXlat5i1JIBscGuxOJKVfHHjP9Y&callback=myMap"></script>
 </body>
 
 </html>

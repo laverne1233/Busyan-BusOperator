@@ -4,6 +4,7 @@
   width: 70%;
   height: fit-content;
   display: flex;
+  flex-direction: column;
 }
 
 .searchTerm {
@@ -15,6 +16,7 @@
   border-radius: 0 5px 5px 0;
   outline: none;
   color: black;
+  margin-bottom: 20px;
 }
 
 .searchTerm:focus{

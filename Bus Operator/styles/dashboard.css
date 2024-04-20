@@ -24,8 +24,7 @@
 
 }
 
-#applicant-table 
-
+#applicant-table,
 #applicant-table td,
 #applicant-table th {
     border: 1px solid #ddd;
