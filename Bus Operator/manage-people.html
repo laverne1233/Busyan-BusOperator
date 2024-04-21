@@ -99,7 +99,7 @@
                                     <input type="radio" id="status" name="data" />
                                     <label for="status">EMPLOYEE STATUS</label>
 
-                                    <input type="radio" id="account" name="data" />
+                                    <input type="radio"  id="account" name="data" />
                                     <label for="account">USER'S ACCOUNT</label>
 
                                     <span class="glider"></span>
@@ -107,68 +107,263 @@
                             </div>
                         </div>
 
-                        <div class="employee-content" style="overflow: scroll;">
+                        <div class="employee-content" style="overflow: scroll; ">
                             <input id="searchBusInput" type="text" class="searchTerm" placeholder="Search" />
                             <button class="manage-people-add-button" id="addBusopBtn"><i
                                     class="fa-solid fa-plus"></i>Add New Staff</button>
                             <table id="bus-table">
                             </table>
-                        </div>
 
-                        <div id="employeeModal" class="modal">
-                            <!-- Modal content -->
-                            <div class="modal-content">
-                                <div
-                                    style="display: flex; flex-direction: row; width: 100%; justify-content: space-between;">
-                                    <span class="opClose">&times;</span>
+                            <div id="employeeModal" class="modal">
+                                <!-- Modal content -->
+                                <div class="modal-content">
+                                    <div
+                                        style="display: flex; flex-direction: row; width: 100%; justify-content: space-between;">
+                                        <span class="opClose">&times;</span>
+                                    </div>
+
+                                    <span class="modal-title">Employee Details</span>
+                                    <div class="divider"></div>
+
+                                    <form id="addEmpForm" style="width: 80%;">
+                                        <div style="display: flex; justify-content: center; flex-direction: column;">
+                                            <img src="./images/profile.png" class="upload-img" alt="img"
+                                                id="empPhotoId" />
+                                            <input type="file" id="addEmpPicBtn" style="margin-bottom: 30px;">
+                                        </div>
+                                        <div class="bus-form-container">
+                                            <div class="column">
+                                                <label for="fullname">Full Name:</label>
+                                                <label for="email">Email:</label>
+                                                <label for="contact">Contact Number:</label>
+                                                <label for="password">Password:</label>
+                                                <label for="emp-type">Employee Type:</label>
+                                            </div>
+                                            <div class="column">
+                                                <input type="text" id="empFullName" name="fullName" required>
+                                                <input type="text" id="empEmail" name="email" required>
+                                                <input type="number" id="empContactNum" name="contactNum" required>
+                                                <input type="text" id="empPassword" name="password" required>
+                                                <input type="text" id="empType" name="type" required>
+                                            </div>
+                                        </div>
+                                        <div style="display: flex; justify-content: center;">
+                                            <button id="saveBusBtn" type="submit">Save</button>
+                                        </div>
+                                    </form>
+
                                 </div>
-
-                                <span class="modal-title">Employee Details</span>
-                                <div class="divider"></div>
-
-                                <form id="addEmpForm">
-                                    <div style="display: flex; justify-content: center; flex-direction: column;">
-                                        <img src="./images/profile.png" class="upload-img" alt="img" id="empPhotoId" />
-                                        <input type="file" id="addEmpPicBtn" style="margin-bottom: 30px;">
-                                    </div>
-                                    <div class="bus-form-container">
-                                        <div class="column">
-                                            <label for="fullname">Full Name:</label>
-                                            <label for="email">Email:</label>
-                                            <label for="contact">Contact Number:</label>
-                                            <label for="password">Password:</label>
-                                            <label for="emp-type">Employee Type:</label>
-                                        </div>
-                                        <div class="column">
-                                            <input type="text" id="empFullName" name="fullName" required>
-                                            <input type="text" id="empEmail" name="email" required>
-                                            <input type="text" id="empContactNum" name="contactNum" required>
-                                            <input type="text" id="empPassword" name="password" required>
-                                            <input type="text" id="empType" name="type" required>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <button id="saveBusBtn" type="submit">Save</button>
-                                    </div>
-                                </form>
-
                             </div>
                         </div>
 
-                        <div class="status-content" style="overflow: scroll; display: none;">
-                            <input id="searchBusInput" type="text" class="searchTerm" placeholder="Search" />
-                            <button class="manage-people-add-button" id="addBusopBtn"><i
-                                    class="fa-solid fa-plus"></i>Add New Bus</button>
-                            <table id="bus-table">
-                            </table>
+                        <div class="status-content" style="display: none;">
+                            <!-- <input id="searchBusInput" type="text" class="searchTerm" placeholder="Search" /> -->
+
+                            <div style="min-height: calc(100vh/3); overflow: scroll;">
+                                <h3>Reports</h3>
+                                <button class="manage-people-add-button" id="addReportBtn"><i
+                                        class="fa-solid fa-plus"></i>Add New Report</button>
+                                <table id="bus-table" class="reports-table">
+                                </table>
+                            </div>
+
+                            <div id="reportModal" class="modal">
+                                <!-- Modal content -->
+                                <div class="modal-content">
+                                    <div
+                                        style="display: flex; flex-direction: row; width: 100%; justify-content: space-between;">
+                                        <span class="reportCloseFormBtn">&times;</span>
+                                    </div>
+
+                                    <span class="modal-title">Employee's Report</span>
+                                    <div class="divider"></div>
+
+                                    <form id="addReportForm" style="width: 80%;">
+                                        <div class="bus-form-container">
+                                            <div class="column">
+                                                <label for="employee">Employee:</label>
+                                                <label for="absent">Attendance:</label>
+                                                <label for="dow">Date of Work:</label>
+                                                <label for="timeIn">Time In:</label>
+                                                <label for="timeOut">Time Out:</label>
+                                                <label for="breakTime">Break Time:</label>
+                                                <label for="overTime">Over Time:</label>
+                                                <label for="dayOff">Day Off:</label>
+                                            </div>
+                                            <div class="column">
+                                                <input type="text" id="employeeInput" name="employee" required>
+                                                <div style="display: flex; flex-direction: row;">
+                                                    <span>Absent</span>
+                                                    <input type="checkbox" id="absentRadioInput" name="absent">
+                                                </div>
+                                                <input type="date" id="dowInput" name="date_of_work" required>
+                                                <input type="time" id="timeInInput" name="time_in" required>
+                                                <input type="time" id="timeOutInput" name="time_out" required>
+                                                <input type="time" id="breakTimeInput" name="break_time" required>
+                                                <input type="time" id="overTimeInput" name="over_time" required>
+                                                <input type="date" id="dayOffInput" name="day_off" required>
+                                            </div>
+                                        </div>
+                                        <div style="display: flex; justify-content: center;">
+                                            <button id="saveReport" type="submit">Save</button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+
+                            <hr style="margin: 30px 10px 30px 10px;">
+
+                            <div style="min-height: calc(100vh/3); overflow: scroll;">
+                                <h3>Pay Statements</h3>
+                                <button class="manage-people-add-button" id="addStatementBtn"><i
+                                        class="fa-solid fa-plus"></i>Add New Pay</button>
+                                <table id="bus-table" class="pay-statements-table">
+                                </table>
+                            </div>
+
+                            <div id="payStatementModal" class="modal" style="display: none;">
+                                <!-- Modal content -->
+                                <div class="modal-content">
+                                    <div
+                                        style="display: flex; flex-direction: row; width: 100%; justify-content: space-between;">
+                                        <span class="statementCloseFormBtn">&times;</span>
+                                    </div>
+
+                                    <span class="modal-title">Employee's Pay Statement</span>
+                                    <div class="divider"></div>
+
+                                    <form id="addStatementForm" style="width: 100%;">
+                                        <div class="bus-form-container">
+                                            <div class="column">
+                                                <label for="employeeInput">Employee:</label>
+                                                <label for="ticketCountInput">No. of Tickets:</label>
+                                                <label for="earnPerDayInput">Total earn per day:</label>
+                                                <label for="quotaPerDayInput">Quota per day:</label>
+                                                <label for="weeklyWageInput">Weekly Wage:</label>
+                                                <label for="overtimePayInput">Overtime Pay:</label>
+                                                <label for="wageRemitInput">Wage Remit:</label>
+                                                <label for="dateRemitInput">Date Remit:</label>
+                                            </div>
+
+                                            <div class="column">
+                                                <input type="text" id="employeeStatementInput" name="employee" required>
+                                                <input type="number" id="ticketCountInput" name="ticket_count" required>
+                                                <input type="number" id="earnPerDayInput" name="earn_per_day" required>
+                                                <input type="number" id="quotaPerDayInput" name="quota_per_day"
+                                                    required>
+                                                <input type="number" id="weeklyWageInput" name="weekly_wage" required>
+                                                <input type="number" id="overtimePayInput" name="overtime_pay" required>
+                                                <div style="display: flex; flex-direction: row; margin: 5px;">
+                                                    <div
+                                                        style="display: flex; flex-direction: row; justify-content: center; margin-right: 10px;">
+                                                        <input type="checkbox" checked="true" id="doneWageRemit"
+                                                            name="status" style="margin-right: 5px;">
+                                                        Done
+                                                    </div>
+
+                                                    <div
+                                                        style="display: flex; flex-direction: row; justify-content: center;">
+                                                        <input type="checkbox" id="pendingWageRemit" name="status"
+                                                            style="margin-right: 5px;">
+                                                        Pending
+                                                    </div>
+                                                </div> <input type="date" id="dateRemitInput" name="date_remit"
+                                                    required>
+                                            </div>
+
+                                            <div class="column" style="margin-left: 60px;">
+                                                <label for="totalAbsentInput">Total Absent:</label>
+                                                <!-- Update label -->
+                                                <label for="totalInInput">Total In:</label>
+                                                <label for="totalOutInput">Total Out:</label>
+                                                <label for="sssInput">SSS:</label>
+                                                <label for="pagibigInput">Pag-ibig:</label>
+                                                <label for="savingsInput">Savings:</label>
+                                                <label for="loanInput">Loan:</label>
+                                                <label for="statusInput">Status:</label>
+                                            </div>
+
+                                            <div class="column">
+                                                <input type="number" id="totalAbsentInput" name="total_absent" required>
+                                                <input type="number" id="totalInInput" name="total_in" required>
+                                                <input type="number" id="totalOutInput" name="total_out" required>
+                                                <input type="number" id="sssInput" name="sss" required>
+                                                <input type="number" id="pagIbigInput" name="pag_ibig" required>
+                                                <input type="number" id="savingsInput" name="savings" required>
+                                                <input type="number" id="loanInput" name="loan" required>
+                                                <div style="display: flex; flex-direction: row;">
+                                                    <div
+                                                        style="display: flex; flex-direction: row; justify-content: center; margin-right: 10px;">
+                                                        <input type="checkbox" checked="true" id="statusInputActive"
+                                                            name="status" style="margin-right: 5px;">
+                                                        Active
+                                                    </div>
+
+                                                    <div
+                                                        style="display: flex; flex-direction: row; justify-content: center;">
+                                                        <input type="checkbox" id="statusInputInactive" name="status"
+                                                            style="margin-right: 5px;">
+                                                        Inactive
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div style="display: flex; justify-content: center;">
+                                            <button id="saveReport" type="submit">Save</button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+
                         </div>
 
                         <div class="account-content" style="overflow: scroll; display: none;">
                             <input id="searchBusInput" type="text" class="searchTerm" placeholder="Search" />
-                            <button class="manage-people-add-button" id="addBusopBtn"><i
-                                    class="fa-solid fa-plus"></i>Add New Bus</button>
-                            <table id="bus-table">
+                            <!-- <button class="manage-people-add-button" id="addBusopBtn"><i
+                                    class="fa-solid fa-plus"></i>Add New Bus</button> -->
+                            <h3>Users</h3>
+
+                            <table id="bus-table" class="users-table">
                             </table>
+
+                            <div id="userModal" class="modal">
+                                <!-- Modal content -->
+                                <div class="modal-content">
+                                    <div
+                                        style="display: flex; flex-direction: row; width: 100%; justify-content: space-between;">
+                                        <span class="userFromCloseBtn">&times;</span>
+                                    </div>
+
+                                    <span class="modal-title">User Details</span>
+                                    <div class="divider"></div>
+
+                                    <form id="userForm" style="width: 80%;">
+                                        <div style="display: flex; justify-content: center; flex-direction: column;">
+                                            <img src="./images/profile.png" class="upload-img" alt="img"
+                                                id="userPhotoId" />
+                                        </div>
+                                        <div class="bus-form-container">
+                                            <div class="column">
+                                                <label for="fullname">Full Name:</label>
+                                                <label for="email">Email:</label>
+                                                <label for="contact">Contact Number:</label>
+                                            </div>
+                                            <div class="column">
+                                                <input type="text" id="userFullName" name="fullName" required>
+                                                <input type="text" id="userEmail" name="email" required>
+                                                <input type="text" id="userContactNum" name="contactNum" required>
+                                            </div>
+                                        </div>
+                                        <div style="display: flex; justify-content: center;">
+                                            <button id="saveBusBtn" type="submit">Save</button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
                         </div>
 
 

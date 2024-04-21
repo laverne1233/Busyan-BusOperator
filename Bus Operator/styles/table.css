@@ -33,11 +33,11 @@
     padding-top: 8px;
     padding-bottom: 5px;
     text-align: center;
-    background-color: #9488a6;
-    color: white;
+    background-color: #d6cde3;
+    color: black;
 }
 
-#bus-table td>img {
+#bus-table td > img {
     width: 30px;
     height: 30px;
 }

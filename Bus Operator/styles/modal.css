@@ -31,7 +31,7 @@
     background-color: #fefefe;
     margin: auto;
     border: 1px solid #888;
-    width: 80%;
+    width: fit-content;
     padding: 15px;
 }
 
@@ -194,7 +194,7 @@ input[type="file"] {
     min-width: 100px;
     width: fit-content;
     align-self: flex-start;
-    margin: 10px;
+    margin: 15px;
 }
 
 .bus-op-detail-row span {
@@ -222,9 +222,9 @@ input[type="file"] {
 }
 
 .bus-form-container {
-    max-width: 800px;
     margin: 0 auto;
     display: flex; /* Display form as flex container */
+    justify-content: center;
 }
 
 .bus-form-container .column {
@@ -235,7 +235,7 @@ input[type="file"] {
 }
 
 .bus-form-container label {
-    margin-bottom: 30px;
+    margin-bottom: 27px;
 }
 
 .bus-form-container input {

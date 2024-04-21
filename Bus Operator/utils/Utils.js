@@ -21,3 +21,36 @@ export const convertToPascal = (str) => {
 export const getCurrentDateTimeInMillis = () => {
     return new Date().getTime();
 }
+
+export const convertTo12Hour = (time24) => {
+    const [hours24, minutes] = time24.split(':').map(Number);
+
+    // Determine AM/PM and 12-hour representation
+    const period = hours24 >= 12 ? 'PM' : 'AM';
+    const hours12 = ((hours24 + 11) % 12) + 1; // Converts 24-hour to 12-hour and avoids 0
+
+    // Return the formatted 12-hour time
+    return `${hours12}:${minutes.toString().padStart(2, '0')} ${period}`;
+}
+
+export const convertToMilitaryTime = (time12) => {
+     // Separate the time from the AM/PM designation
+     let [time, period] = time12.split(' ');
+
+     // Separate hours and minutes
+     let [hours, minutes] = time.split(':').map(Number);
+ 
+     // Convert to 24-hour format based on AM/PM
+     if (period === 'PM' && hours !== 12) {
+         hours += 12; // Add 12 to convert PM hours to 24-hour format
+     } else if (period === 'AM' && hours === 12) {
+         hours = 0; // 12:00 AM is 00:00 in military time
+     }
+ 
+     // Format the hours and minutes to ensure leading zeros
+     const formattedHours = hours.toString().padStart(2, '0');
+     const formattedMinutes = minutes.toString().padStart(2, '0');
+ 
+     // Return the military time as HH:MM
+     return `${formattedHours}:${formattedMinutes}`;
+}

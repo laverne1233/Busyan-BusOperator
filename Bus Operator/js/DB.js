@@ -6,6 +6,8 @@ export const DBPaths = {
     BUS_DRIVERS: 'BusDrivers',
     PASSENGERS: 'Passengers',
     EMPLOYEES: 'Employees',
+    EMPLOYEES_REPORTS: 'EmployeesReports',
+    EMPLOYEES_PAY_STATEMENTS: 'EmployeesPayStatements',
     ADMIN: 'Admin',
     LOGIN_NOTIF: 'LoginNotification',
     LIVE_DRIVERS: 'LiveDrivers',
