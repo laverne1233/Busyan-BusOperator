@@ -6,6 +6,7 @@ import { convertToPascal, getCurrentDateTimeInMillis } from '/Bus Operator/utils
 
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
+const myData = JSON.parse(sessionStorage.getItem('currentUser'));
 
 const modal = document.getElementById("opModal");
 const loader = document.querySelector('.loader-container');
@@ -194,7 +195,8 @@ function saveDataInDb() {
             startPoint: startPoint.value,
             endPoint: endPoint.value,
             plateNumber: plateNumber.value.toUpperCase(),
-            datetimeAdded: new Date().toISOString()
+            datetimeAdded: new Date().toISOString(),
+            busOperatorId: myData.key 
         };
 
         const busDetailsRef = database.ref(`${DBPaths.BUS_DETAILS}/${id}`);

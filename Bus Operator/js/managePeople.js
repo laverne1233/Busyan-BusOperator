@@ -5,9 +5,11 @@ import firebaseConfig from '/CONFIG.js';
 
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
+const myData = JSON.parse(sessionStorage.getItem('currentUser'));
 
 const loader = document.querySelector('.loader-container');
 
+const searchEmpInput = document.getElementById('searchEmpInput');
 // ADD EMPLOYEE FORM ELEMENTS
 const addEmpFormModal = document.getElementById('employeeModal');
 const opCloseBtn = document.querySelector('.opClose');
@@ -33,6 +35,7 @@ document.addEventListener('DOMContentLoaded', init);
 addEmpForm.addEventListener('submit', saveEmpData);
 opCloseBtn.addEventListener('click', hideAddBusForm)
 addBusopBtn.addEventListener('click', addEmp)
+searchEmpInput.addEventListener('input', handleSearchEmp);
 
 
 //TAB SECTION
@@ -93,6 +96,25 @@ function generateEmployees() {
             });
         }
     )
+}
+
+function handleSearchEmp() {
+    createTableHeader();
+
+    const searchTerm = searchEmpInput.value.toLowerCase().trim();
+
+    // Filter data based on search term
+    const results = empArray.filter(item => item.fullName.toLowerCase().includes(searchTerm));
+    // Render search results
+    renderResults(results);
+}
+
+function renderResults(results) {
+
+    results.forEach(result => {
+
+        createEmpTables(result);
+    });
 }
 
 function createTableHeader() {
@@ -297,6 +319,7 @@ function createAccount(empImgUrl) {
         phoneNum: empContactNumInput.value,
         imageUrl: empImgUrl,
         type: convertToPascal(empTypeInput.value),
+        busOperatorId: myData.key,
         datetimeAdded: new Date().toISOString()
     };
 
@@ -632,7 +655,7 @@ function createReport() {
         break_time: convertTo12Hour(breakTimeInput.value),
         over_time: convertTo12Hour(overTimeInput.value),
         day_off: dayOffInput.value,
-
+        busOperatorId: myData.key,
         datetimeAdded: new Date().toISOString()
     };
 
@@ -1037,6 +1060,7 @@ function createStatement() {
         savings: savingsInput.value,
         loan: loanInput.value,
         statusActive: statusInputActive.checked,
+        busOperatorId: myData.key,
 
         datetimeAdded: new Date().toISOString()
     };
@@ -1114,6 +1138,8 @@ const userFromCloseBtn = document.querySelector(".userFromCloseBtn");
 const userModal = document.getElementById('userModal');
 
 const userForm = document.getElementById('userForm');
+const searchUserInput = document.getElementById('searchUserInput');
+
 const userPhotoId = document.getElementById('userPhotoId');
 const userFullNameInput = document.getElementById('userFullName');
 const userEmailInput = document.getElementById('userEmail');
@@ -1122,6 +1148,7 @@ const userContactNumInput = document.getElementById('userContactNum');
 let passengerArray;
 
 userFromCloseBtn.addEventListener('click', hideUserModal);
+searchUserInput.addEventListener('input', handleSearchUser);
 
 function generateUsers() {
     createUserTableHeaders()
@@ -1142,6 +1169,20 @@ function generateUsers() {
             });
         }
     )
+}
+
+function handleSearchUser() {
+    createUserTableHeaders();
+
+    const searchTerm = searchUserInput.value.toLowerCase().trim();
+
+    // Filter data based on search term
+    const results = passengerArray.filter(item => item.fullName.toLowerCase().includes(searchTerm));
+    // Render search results
+    results.forEach(result => {
+
+        createPassengerTables(result);
+    });
 }
 
 function createUserTableHeaders() {
@@ -1230,7 +1271,7 @@ function createPassengerTables(passengerData) {
     deleteIcon.addEventListener("click", function () {
         deleteUser(passengerData)
     });
-    
+
     hideLoader();
 }
 
