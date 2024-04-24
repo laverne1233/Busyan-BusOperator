@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BusYan Bus Operator</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-    <link rel="stylesheet" href="./styles/manage-user.css" />
+    <link rel="stylesheet" href="./styles/manage-job.css" />
     <link rel="stylesheet" href="./styles/searchbar.css" />
     <link rel="stylesheet" href="./styles/admin.css" />
     <link rel="stylesheet" href="./styles/profile.css" />
@@ -33,34 +33,44 @@
 
             <ul id="sidebarUl">
                 <li>
-                    <a href="#" data-target="dashboard"><i class="fas fa-light fa-table-cells"></i><span>Dashboard</span></a>
-                </li>
-                <li >
-                    <a href="#" data-target="notification"><i class="fas fa-regular fa-bell "></i><span>Notification</span></a>
-                </li>
-                <li >
-                    <a href="#" data-target="manage-bus"><i class="fas a-solid fa-bus-simple "></i></i><span  >Manage Bus</span></a>
-                </li>
-                <li >
-                    <a href="#" data-target="manage-people"><i class="fas fa-light fa-user-group "></i></i><span >Manage People</span></a>
-                </li>
-                <li >
-                    <a href="#" data-target="bus-schedule"><i class="fas fa-regular fa-calendar-days "></i></i><span >Bus Schedule</span></a>
-                </li>
-                <li class="selected-menu">
-                    <a href="#" data-target="manage-job"><i class="fas fa-solid fa-briefcase selected-menu-text"></i></i><span class="selected-menu-text">Manage Job</span></a>
+                    <a href="#" data-target="dashboard"><i
+                            class="fas fa-light fa-table-cells"></i><span>Dashboard</span></a>
                 </li>
                 <li>
-                    <a href="#" data-target="applicants"><i class="fas fa-solid fa-user-plus"></i><span>Applicants</span></a>
+                    <a href="#" data-target="notification"><i
+                            class="fas fa-regular fa-bell "></i><span>Notification</span></a>
+                </li>
+                <li>
+                    <a href="#" data-target="manage-bus"><i class="fas a-solid fa-bus-simple "></i></i><span>Manage
+                            Bus</span></a>
+                </li>
+                <li>
+                    <a href="#" data-target="manage-people"><i class="fas fa-light fa-user-group "></i></i><span>Manage
+                            People</span></a>
+                </li>
+                <li>
+                    <a href="#" data-target="bus-schedule"><i class="fas fa-regular fa-calendar-days "></i></i><span>Bus
+                            Schedule</span></a>
+                </li>
+                <li class="selected-menu">
+                    <a href="#" data-target="manage-job"><i
+                            class="fas fa-solid fa-briefcase selected-menu-text"></i></i><span
+                            class="selected-menu-text">Manage Job</span></a>
+                </li>
+                <li>
+                    <a href="#" data-target="applicants"><i
+                            class="fas fa-solid fa-user-plus"></i><span>Applicants</span></a>
                 </li>
                 <li>
                     <a href="#" data-target="profile"><i class="fas fa-regular fa-user"></i><span>Profile</span></a>
                 </li>
                 <li>
-                    <a href="#" data-target="about-us"><i class="fas fa-regular fa-circle-info"></i><span>About Us</span></a>
+                    <a href="#" data-target="about-us"><i class="fas fa-regular fa-circle-info"></i><span>About
+                            Us</span></a>
                 </li>
                 <li>
-                    <a href="#" data-target="help-center"><i class="fas fa-solid fa-circle-question"></i></i><span>Help Center</span></a>
+                    <a href="#" data-target="help-center"><i class="fas fa-solid fa-circle-question"></i></i><span>Help
+                            Center</span></a>
                 </li>
             </ul>
 
@@ -73,21 +83,94 @@
         </div>
 
         <div class="content-container">
-            <div class="manage-user content">
+            <div class="manage-job content">
                 <h1 class="header">Manage Job</h1>
                 <div class="container">
-                  <div class="card" style="display: flex; flex-direction: column;">
-        
-                    <div class="wrap">
-                      <div class="search">
-                        <input id="searchInput" type="text" class="searchTerm" placeholder="Search" />
-                        <ul id="searchResults"></ul>        
-                      </div>
-                    </div>       
+                    <div class="card" style="display: flex; flex-direction: column;">
 
-                  </div>
+                        <div class="wrap">
+                            <div class="search">
+                                <input id="searchInput" type="text" class="searchTerm" placeholder="Search" />
+                                <button class="add-button" id="addBusSchedBtn">
+                                    <i class="fa-solid fa-plus"></i>
+                                    Add a Job
+                                </button>
+                                <div class="job-container">
+                                    <div class="job-card">
+                                        <h5>Bus Driver</h4>
+                                        <h6>PITAM</h6>
+                                        <h5><i class="fa-solid fa-location-dot"></i>Alfonso Arcilla, Cebu City</h5>
+                                        <p>PHP 13,000 - 18,000 / Month</p>
+                                        <span>08-July-2023</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
 
+            </div>
+
+            <div id="jobModal" class="job-modal ">
+                <!-- Modal content -->
+                <div class="job-modal-content">
+                    <div style="display: flex; flex-direction: row; width: 100%; justify-content: space-between;">
+                        <span class="jobFormCloseBtn">&times;</span>
+                    </div>
+
+                    <span class="modal-title">Job</span>
+                    <div class="divider"></div>
+
+                    <form id="addJobForm" style="width: 80%;">
+                        <div class="bus-form-container">
+                            <div class="column">
+                                <label for="bus">Title:</label>
+                                <label for="busDriver">Company:</label>
+                                <label for="conductor">Company Address:</label>
+                                <label for="startDate">Salary:</label>
+                            </div>
+
+                            <div class="column">
+                                <input type="text" id="bus" name="bus" placeholder="Bus ID" required>
+                                <input type="text" id="busDriver" name="bus_driver" placeholder="Bus Driver ID"
+                                    required>
+                                <input type="date" id="startDate" name="start_date" required>
+                                <input type="date" id="endDate" name="end_date" required>
+                            </div>
+
+                            <div class="column">
+                                <img src="./images/profile.png" class="job-img" alt="img" id="empPhotoId" />
+                                <input type="file" id="addEmpPicBtn" style="margin-bottom: 30px;">
+                            </div>
+
+                        </div>
+                        <div class="bus-form-container">                            
+                            <div class="column">
+                                <h3 style="margin-bottom: 20px;">Job Description</h3>
+                                <span for="bus">Job Highlights:</span>
+                                <textarea id="multiText" name="multiText" rows="5" cols="40" placeholder="Write something here..."></textarea>
+                            
+                                <span for="bus">Qualifications:</span>
+                                <textarea id="multiText" name="multiText" rows="5" cols="40" placeholder="Write something here..."></textarea>
+                            
+                                <span for="bus">How to apply:</span>
+                                <textarea id="multiText" name="multiText" rows="5" cols="40" placeholder="Write something here..."></textarea>
+                            
+                            </div>
+                        </div>
+                        <div class="bus-form-container">                            
+                            <div class="column">
+                                <h3 style="margin-bottom: 20px;">About the company</h3>
+                                <textarea id="multiText" name="multiText" rows="5" cols="40" placeholder="Write something here..."></textarea>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: center;">
+                            <button id="saveBusSchedule" type="submit">Save</button>
+                        </div>
+                    </form>
+
+                </div>
             </div>
         </div>
     </div>
