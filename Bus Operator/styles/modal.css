@@ -1,6 +1,6 @@
 /* The Modal (background) */
 .modal {
-    /* display: none; */
+    display: none;
     /* Hidden by default */
     position: fixed;
     /* Stay in place */
@@ -235,7 +235,7 @@ input[type="file"] {
 }
 
 .bus-form-container label {
-    margin-bottom: 27px;
+    margin-bottom: 10px;
 }
 
 .bus-form-container input {

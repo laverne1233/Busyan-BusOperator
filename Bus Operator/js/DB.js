@@ -10,6 +10,7 @@ export const DBPaths = {
     EMPLOYEES_REPORTS: 'EmployeesReports',
     EMPLOYEES_PAY_STATEMENTS: 'EmployeesPayStatements',
     ADMIN: 'Admin',
+    JOB: 'Jobs',
     LOGIN_NOTIF: 'LoginNotification',
     LIVE_DRIVERS: 'LiveDrivers',
     LIVE_PASSENGERS: 'LivePassengers',

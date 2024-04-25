@@ -41,13 +41,15 @@
 
 .job-img {
     align-self: center;
-    width: 300px;
+    width: auto;
+    min-width: 150px;
+    max-width: 400px;
     height: 150px;
     border: 2px solid white;
 }
 
 .job-modal {
-    /* display: none; */
+    display: none;
     /* Hidden by default */
     position: fixed;
     /* Stay in place */

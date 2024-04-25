@@ -250,7 +250,8 @@ function createBusSchedule() {
         driverFullname: driverFullnameInput.value,
         conductorFullname: conductorFullnameInput.value,
         datetimeAdded: new Date().toISOString(),
-        busOperatorId: myData.key
+        busOperatorId: myData.key,
+        company: myData.companyName
     };
     
 

@@ -54,3 +54,19 @@ export const convertToMilitaryTime = (time12) => {
      // Return the military time as HH:MM
      return `${formattedHours}:${formattedMinutes}`;
 }
+
+export const convertToDDMMMYYYY = (isoDateString) => {
+    const date = new Date(isoDateString);  // Create a Date object from the ISO string
+
+    const day = date.getUTCDate();  // Get the day (1-31)
+    const month = date.getUTCMonth();  // Get the month (0-11)
+    const year = date.getUTCFullYear();  // Get the year
+
+    // Array of month abbreviations (1-based index)
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+    // Format the date as "DD-MMM-YYYY"
+    const formattedDate = `${day.toString().padStart(2, '0')}-${monthNames[month]}-${year}`;
+
+    return formattedDate;  // Return the formatted date
+}

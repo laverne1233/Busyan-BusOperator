@@ -269,7 +269,7 @@ function saveEmpData(event) {
             uploadEmpImage();
         }
         if (action === 'Edit') {
-            validateImage()
+            validateImage();
         }
     }
 }

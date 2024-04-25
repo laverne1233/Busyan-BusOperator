@@ -90,19 +90,12 @@
 
                         <div class="wrap">
                             <div class="search">
-                                <input id="searchInput" type="text" class="searchTerm" placeholder="Search" />
-                                <button class="add-button" id="addBusSchedBtn">
+                                <input id="searchJobInput" type="text" class="searchTerm" placeholder="Search" />
+                                <button class="add-button" id="addJobBtn">
                                     <i class="fa-solid fa-plus"></i>
                                     Add a Job
                                 </button>
                                 <div class="job-container">
-                                    <div class="job-card">
-                                        <h5>Bus Driver</h4>
-                                        <h6>PITAM</h6>
-                                        <h5><i class="fa-solid fa-location-dot"></i>Alfonso Arcilla, Cebu City</h5>
-                                        <p>PHP 13,000 - 18,000 / Month</p>
-                                        <span>08-July-2023</span>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -125,58 +118,75 @@
                     <form id="addJobForm" style="width: 80%;">
                         <div class="bus-form-container">
                             <div class="column">
-                                <label for="bus">Title:</label>
-                                <label for="busDriver">Company:</label>
-                                <label for="conductor">Company Address:</label>
-                                <label for="startDate">Salary:</label>
+                                <label for="jobTitle" style="margin-bottom: 27px;">Title:</label>
+                                <label for="companyName" style="margin-bottom: 27px;">Company:</label>
+                                <label for="companyAddress" style="margin-bottom: 27px;">Company Address:</label>
+                                <label for="salary" style="margin-bottom: 27px;">Salary:</label>
                             </div>
-
+                    
                             <div class="column">
-                                <input type="text" id="bus" name="bus" placeholder="Bus ID" required>
-                                <input type="text" id="busDriver" name="bus_driver" placeholder="Bus Driver ID"
-                                    required>
-                                <input type="date" id="startDate" name="start_date" required>
-                                <input type="date" id="endDate" name="end_date" required>
+                                <input type="text" id="jobTitle" name="job_title" placeholder="Enter Job Title" required>
+                                <input type="text" id="companyName" name="company_name" placeholder="Enter Company Name" required>
+                                <input type="text" id="companyAddress" name="company_address" placeholder="Enter Company Address" required>
+                                <input type="text" id="salary" name="salary" placeholder="Enter Salary" required>
                             </div>
-
+                    
                             <div class="column">
-                                <img src="./images/profile.png" class="job-img" alt="img" id="empPhotoId" />
-                                <input type="file" id="addEmpPicBtn" style="margin-bottom: 30px;">
+                                <img src="./images/profile.png" class="job-img" alt="Profile Image" id="employeePhoto" />
+                                <input type="file" id="uploadJobImg" style="margin-bottom: 30px;">
                             </div>
-
                         </div>
+                    
                         <div class="bus-form-container">                            
                             <div class="column">
                                 <h3 style="margin-bottom: 20px;">Job Description</h3>
-                                <span for="bus">Job Highlights:</span>
-                                <textarea id="multiText" name="multiText" rows="5" cols="40" placeholder="Write something here..."></textarea>
+                                <label for="jobTypeInput">Job Type:</label>
+                                <input id="jobTypeInput" name="job_type" style="margin-bottom: 40px;" placeholder="Describe job type..." required>
                             
-                                <span for="bus">Qualifications:</span>
-                                <textarea id="multiText" name="multiText" rows="5" cols="40" placeholder="Write something here..."></textarea>
+                                <label for="jobHighlights">Job Highlights:</label>
+                                <textarea id="jobHighlights" name="job_highlights" rows="5" cols="40" placeholder="Describe job highlights..." required></textarea>
                             
-                                <span for="bus">How to apply:</span>
-                                <textarea id="multiText" name="multiText" rows="5" cols="40" placeholder="Write something here..."></textarea>
+                                <label for="qualifications">Qualifications:</label>
+                                <textarea id="qualifications" name="qualifications" rows="5" cols="40" placeholder="Describe qualifications..." required></textarea>
+                            
+                                <label for="applicationInstructions">How to apply:</label>
+                                <textarea id="applicationInstructions" name="application_instructions" rows="5" cols="40" placeholder="Describe how to apply..." required></textarea>
                             
                             </div>
                         </div>
+                    
                         <div class="bus-form-container">                            
                             <div class="column">
                                 <h3 style="margin-bottom: 20px;">About the company</h3>
-                                <textarea id="multiText" name="multiText" rows="5" cols="40" placeholder="Write something here..."></textarea>
+                                <textarea id="aboutCompany" name="about_company" rows="5" cols="40" placeholder="Describe the company..." required></textarea>
                             </div>
                         </div>
+                    
+                        <div class="bus-form-container">                            
+                            <div class="column">
+                                <h3 style="margin-bottom: 20px;">Employee's Questionnaire</h3>
+                                <label for="questionnaire">Provide a for the applicant to answer. (Optional)</label>
+                                <input id="questionnaire" name="questionnaire" style="margin-bottom: 40px;" placeholder="Add your question here">
+                                <ul id="questionnaireList" style="margin-bottom: 10px;"></ul>
+                                <label style="font-size: 12px; margin-bottom: 50px;" id="addQuestionBtn">Add question <i class="fa-solid fa-plus"></i></label>
+                            </div>
+                        </div>
+                    
                         <div style="display: flex; justify-content: center;">
-                            <button id="saveBusSchedule" type="submit">Save</button>
+                            <button id="saveJob" type="submit">Save</button>
                         </div>
                     </form>
+                    
 
                 </div>
             </div>
         </div>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/3.7.4/firebase.js "></script>
     <script src="./js/sidebar.js" type="module"></script>
     <script src="./js/logout.js" type="module"></script>
+    <script src="./js/manageJob.js" type="module"></script>
 
 </body>
 
