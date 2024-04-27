@@ -11,6 +11,9 @@ const applicationModalCloseBtn = document.querySelector(".applicationModalCloseB
 const applicantsTable = document.querySelector(".search > #bus-table");
 const searchApplicantsInput = document.getElementById("searchApplicantsInput");
 const applicationModal = document.getElementById("applicationModal");
+const photoModal = document.getElementById("photoModal");
+const docImage = document.getElementById("docImage");
+const docCloseBtn = document.querySelector(".docCloseBtn");
 
 // Applicant information
 const applicantName = document.getElementById('applicantName');  // Applicant name
@@ -41,7 +44,9 @@ document.addEventListener('DOMContentLoaded', init);
 approveBtn.addEventListener('click', approveApplication);
 disapproveBtn.addEventListener('click', disapproveApplication);
 applicationModalCloseBtn.addEventListener('click', hideApplicationModal);
+docCloseBtn.addEventListener('click', hideDocImage);
 searchApplicantsInput.addEventListener('input', handleSearchInput);
+
 
 function init() {
     generateApplicants();
@@ -59,7 +64,6 @@ function handleSearchInput() {
         createApplicationTables(result);
     });
 }
-
 
 function generateApplicants() {
     createApplicationTableHeaders();
@@ -198,6 +202,12 @@ function viewApplicant(applicationData) {
     addressH6.textContent = convertToPascal(applicationData.address);  // Address details
     educationH6.textContent = convertToPascal(applicationData.educationalAttainment);  // Education details
     addInfoH6.textContent = convertToPascal(applicationData.additionalInfo);  // Additional information
+    resumeBtn.addEventListener('click', function() {
+        viewResume(applicationData);
+    });
+    driversLicenseBtn.addEventListener('click', function() {
+        viewLicense(applicationData);
+    });
     showApplicationModal();
 }
 
@@ -232,6 +242,16 @@ function updateApplication(isApproved) {
     }
 }
 
+function viewResume(applicationData) {
+    docImage.src = applicationData.resumeUrl;
+    showDocImage();
+}
+
+function viewLicense(applicationData) {
+    docImage.src = applicationData.licenseUrl;
+    showDocImage();
+}
+
 function showApplicationModal() {
     applicationModal.style.display = 'block';
 }
@@ -239,4 +259,14 @@ function showApplicationModal() {
 function hideApplicationModal() {
     applicationModal.style.display = "none";
 }
+
+function showDocImage() {
+    photoModal.style.display = 'block';
+}
+
+function hideDocImage() {
+    photoModal.style.display = "none";
+}
+
+
 

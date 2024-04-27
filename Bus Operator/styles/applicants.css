@@ -27,6 +27,10 @@
     /* Black w/ opacity */
 }
 
+#photoModal {
+    padding-top: 200px;
+}
+
 /* Modal Content */
 .modal-content {
     display: flex;
@@ -91,4 +95,10 @@
     height: 70px;
     width: 70px;
     border-radius: 50%;
+}
+
+#docImage {
+    max-width: 800px;
+    max-height: 600px;
+    width: 90%;
 }

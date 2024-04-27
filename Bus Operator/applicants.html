@@ -93,7 +93,7 @@
                         <div class="wrap">
                             <div class="search">
                                 <input id="searchApplicantsInput" type="text" class="searchTerm" placeholder="Search by Work Experience" />
-                                <table id="bus-table" class="reports-table"></table>
+                                <table id="bus-table" c lass="reports-table"></table>
                             </div>
                         </div>
                     </div>
@@ -113,7 +113,7 @@
                                 <div class="bus-form-container">
                                     <div style="display: flex; flex-direction: row; align-items: center; margin-bottom: 20px;">
                                         <div style="display: flex; flex-direction: column; margin-right: 15px;">
-                                            <span id="applicantName">Loading...</span>
+                                            <span id="applicantName" style="font-weight: bold;">Loading...</span>
                                             <span id="applicantEmail">Loading...</span>
                                             <span id="applicantPhoneNum">Loading...</span>
                                         </div>
@@ -171,6 +171,18 @@
                                 </div> 
                             </form>
 
+                        </div>
+                    </div>
+
+                    <div id="photoModal" class="applicant-modal" >
+                        <div class="modal-content">
+                            <div
+                                style="display: flex; flex-direction: row; width: 100%; justify-content: space-between;">
+                                <span class="docCloseBtn">&times;</span>
+                            </div>
+                            <div>
+                                <img id="docImage" src="" alt="doc image">
+                            </div>
                         </div>
                     </div>
                 </div>
