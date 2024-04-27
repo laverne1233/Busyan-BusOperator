@@ -12,6 +12,7 @@ const searchJobInput = document.getElementById("searchJobInput");
 
 const addJobBtn = document.getElementById("addJobBtn");
 const jobModal = document.getElementById("jobModal");
+const jobDeleteBtn = document.getElementById("jobDeleteBtn");
 const jobFormCloseBtn = document.querySelector(".jobFormCloseBtn");
 
 // References to the primary form
@@ -49,24 +50,37 @@ let jobArray;
 let jobId;
 let fileNameJobPhoto;
 let fileJobPhoto;
-let questionnaireArray = [];
+let questionnaireArray;
 
 
 document.addEventListener('DOMContentLoaded', init);
 addJobBtn.addEventListener('click', addJob);
+jobDeleteBtn.addEventListener('click', deleteJob);
 jobFormCloseBtn.addEventListener('click', hideJobForm);
 addJobForm.addEventListener('submit', saveJobData);
-addQuestionLabel.addEventListener('click', addQuestion);  // Trigger `addQuestion` function on click
-// searchJobInput.addEventListener('input', handleSearchJob);
+addQuestionLabel.addEventListener('click', addQuestion);
+searchJobInput.addEventListener('input', handleSearchJob);
 
 function init() {
     generateJobs();
 };
 
+function handleSearchJob() {
+    const searchTerm = searchJobInput.value.toLowerCase().trim();
+    const results = jobArray.filter(item => {
+        return item.title.toLowerCase().includes(searchTerm);
+    });
+    jobContainer.innerHTML = '';
+    results.forEach(result => {
+        createJobCard(result);
+    });
+}
+
 function generateJobs() {
     const jobRef = database.ref(`${DBPaths.JOB}`);
     jobArray = [];
     questionnaireArray = [];
+    jobContainer.innerHTML = '';
 
     jobRef.once('value',
         (snapshot) => {
@@ -84,7 +98,6 @@ function generateJobs() {
 }
 
 function createJobCard(jobData) {
-    jobContainer.innerText = '';
 
     // Create the main job card container
     const jobCard = document.createElement('div');
@@ -128,38 +141,44 @@ function addQuestion() {
 
     if (questionText !== '') {  // Only add if there's text
         questionnaireArray.push(questionText);
+        console.log(questionnaireArray);  // Log the updated array
+
     }
 
-    createQuestionnaireList();
+    createQuestionnaireList(questionnaireArray);
 }
 
-function createQuestionnaireList() {
-    questionnaireList.innerText = '';
+function createQuestionnaireList(questionnaireArray) {
+    questionnaireList.innerText = '';  // Clear existing list items
 
-    if(questionnaireArray != undefined) {
-        questionnaireArray.map((questione) => {
+    if (questionnaireArray != undefined) {
+        questionnaireArray.forEach((questioner) => {
             const newListItem = document.createElement('li');  // Create a new <li>
-            const deleteButton = document.createElement('i');
+            newListItem.textContent = questioner;  // Set the text for the list item
+
+            const deleteButton = document.createElement('i');  // Create a delete icon
             deleteButton.className = 'fa-solid fa-trash';
-            deleteButton.style.cursor = 'pointer';  // Change the cursor to indicate interactivity
-            deleteButton.style.color = 'red';  // Make it visually distinctive
+            deleteButton.style.cursor = 'pointer';
+            deleteButton.style.color = 'red';
             deleteButton.style.marginLeft = '10px';
-        
-            newListItem.textContent = questione;  // Set the text of the <li>
-        
-            questionnaireInput.value = '';  // Clear the input field after adding
-        
-            // Event listener to remove the item when the delete button is clicked
+
+            // Append the delete button to the list item
+            newListItem.appendChild(deleteButton);
+
+            // Event listener to remove the item and update the array
             deleteButton.addEventListener('click', () => {
                 newListItem.remove();  // Remove the list item
+                // Filter out the deleted item from the original array
+                questionnaireArray.splice(questionnaireArray.indexOf(questioner), 1);  // Update the array
+                console.log(questionnaireArray);  // Log the updated array
             });
-    
-            questionnaireList.appendChild(newListItem);  // Append the <li> to the <ul>
-            newListItem.appendChild(deleteButton);
+
+            // Append the list item to the list
+            questionnaireList.appendChild(newListItem);
         });
     }
-    
 }
+
 
 function addJob() {
     action = 'Add';
@@ -203,8 +222,23 @@ function editJob(jobData) {
     showJobForm();
 }
 
-function deleteJob(jobData) {
+function deleteJob() {
 
+    const isConfirmed = window.confirm("Confirm delete?");
+
+    if (isConfirmed) {
+        const dbRef = firebase.database().ref(`${DBPaths.JOB}/${jobId}`);
+
+        dbRef.remove()
+            .then(() => {
+                alert('Job deleted successfully.');
+                hideJobForm();
+                generateJobs();
+            })
+            .catch((error) => {
+                alert('Job deletion failed.');
+            });
+    }
 }
 
 function saveJobData(event) {
@@ -314,6 +348,7 @@ function createJob(downloadURL) {
 }
 
 function updateJob(downloadURL) {
+
     const jobData = {
         title: jobTitleInput.value,  // Job Title
         company: companyNameInput.value,  // Company Name

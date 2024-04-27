@@ -12,7 +12,8 @@
     <link rel="stylesheet" href="./styles/profile.css" />
     <link rel="stylesheet" href="./styles/modal.css" />
     <link rel="stylesheet" href="./styles/dashboard.css" />
-    <link rel="stylesheet" href="./styles/notification.css" />
+    <link rel="stylesheet" href="./styles/applicants.css" />
+    <link rel="stylesheet" href="./styles/table.css" />
     <link rel="stylesheet" href="/Common/common.css" />
 </head>
 
@@ -33,34 +34,44 @@
 
             <ul id="sidebarUl">
                 <li>
-                    <a href="#" data-target="dashboard"><i class="fas fa-light fa-table-cells"></i><span>Dashboard</span></a>
-                </li>
-                <li >
-                    <a href="#" data-target="notification"><i class="fas fa-regular fa-bell "></i><span>Notification</span></a>
-                </li>
-                <li >
-                    <a href="#" data-target="manage-bus"><i class="fas a-solid fa-bus-simple "></i></i><span  >Manage Bus</span></a>
-                </li>
-                <li >
-                    <a href="#" data-target="manage-people"><i class="fas fa-light fa-user-group "></i></i><span >Manage People</span></a>
-                </li>
-                <li >
-                    <a href="#" data-target="bus-schedule"><i class="fas fa-regular fa-calendar-days "></i></i><span >Bus Schedule</span></a>
+                    <a href="#" data-target="dashboard"><i
+                            class="fas fa-light fa-table-cells"></i><span>Dashboard</span></a>
                 </li>
                 <li>
-                    <a href="#" data-target="manage-job"><i class="fas fa-solid fa-briefcase "></i></i><span >Manage Job</span></a>
+                    <a href="#" data-target="notification"><i
+                            class="fas fa-regular fa-bell "></i><span>Notification</span></a>
+                </li>
+                <li>
+                    <a href="#" data-target="manage-bus"><i class="fas a-solid fa-bus-simple "></i></i><span>Manage
+                            Bus</span></a>
+                </li>
+                <li>
+                    <a href="#" data-target="manage-people"><i class="fas fa-light fa-user-group "></i></i><span>Manage
+                            People</span></a>
+                </li>
+                <li>
+                    <a href="#" data-target="bus-schedule"><i class="fas fa-regular fa-calendar-days "></i></i><span>Bus
+                            Schedule</span></a>
+                </li>
+                <li>
+                    <a href="#" data-target="manage-job"><i class="fas fa-solid fa-briefcase "></i></i><span>Manage
+                            Job</span></a>
                 </li>
                 <li class="selected-menu">
-                    <a href="#" data-target="applicants"><i class="fas fa-solid fa-user-plus selected-menu-text"></i><span class="selected-menu-text">Applicants</span></a>
+                    <a href="#" data-target="applicants"><i
+                            class="fas fa-solid fa-user-plus selected-menu-text"></i><span
+                            class="selected-menu-text">Applicants</span></a>
                 </li>
                 <li>
                     <a href="#" data-target="profile"><i class="fas fa-regular fa-user"></i><span>Profile</span></a>
                 </li>
                 <li>
-                    <a href="#" data-target="about-us"><i class="fas fa-regular fa-circle-info"></i><span>About Us</span></a>
+                    <a href="#" data-target="about-us"><i class="fas fa-regular fa-circle-info"></i><span>About
+                            Us</span></a>
                 </li>
                 <li>
-                    <a href="#" data-target="help-center"><i class="fas fa-solid fa-circle-question"></i></i><span>Help Center</span></a>
+                    <a href="#" data-target="help-center"><i class="fas fa-solid fa-circle-question"></i></i><span>Help
+                            Center</span></a>
                 </li>
             </ul>
 
@@ -73,27 +84,105 @@
         </div>
 
         <div class="content-container">
-            <div class="manage-user content">
+
+            <div class="applicants content">
                 <h1 class="header">Applicants</h1>
                 <div class="container">
-                  <div class="card" style="display: flex; flex-direction: column;">
-        
-                    <div class="wrap">
-                      <div class="search">
-                        <input id="searchInput" type="text" class="searchTerm" placeholder="Search" />
-                        <ul id="searchResults"></ul>        
-                      </div>
-                    </div>       
-    
-                  </div>
+
+                    <div class="card" id="applicantsCardId">
+                        <div class="wrap">
+                            <div class="search">
+                                <input id="searchApplicantsInput" type="text" class="searchTerm" placeholder="Search by Work Experience" />
+                                <table id="bus-table" class="reports-table"></table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="applicationModal" class="applicant-modal">
+                        <!-- Modal content -->
+                        <div class="modal-content">
+                            <div
+                                style="display: flex; flex-direction: row; width: 100%; justify-content: space-between;">
+                                <span class="applicationModalCloseBtn">&times;</span>
+                            </div>
+
+                            <span class="modal-title">Application</span>
+                            <div class="divider"></div>
+
+                            <form id="addBusSchedForm" style="width: 100%;">
+                                <div class="bus-form-container">
+                                    <div style="display: flex; flex-direction: row; align-items: center; margin-bottom: 20px;">
+                                        <div style="display: flex; flex-direction: column; margin-right: 15px;">
+                                            <span id="applicantName">Loading...</span>
+                                            <span id="applicantEmail">Loading...</span>
+                                            <span id="applicantPhoneNum">Loading...</span>
+                                        </div>
+                                        <img id="applicantPhoto" class="applicant-photo" src="/Bus Operator/images/profile.png" alt="applicant image">
+                                    </div>
+                                </div>
+
+                                <div class="bus-form-container" style="margin-bottom: 15px;" >
+                                    <div id="answeredQuestionsBtn" class="column" style="background-color: whitesmoke; display: flex; justify-content: space-between; flex-direction: row;">
+                                        <h6>Answered questions from participant</h6>
+                                        <i class="fa-solid fa-chevron-right"></i>
+                                    </div>
+
+                                    <div id="resumeBtn" class="column" style="background-color: whitesmoke; display: flex; justify-content: space-between; flex-direction: row;">
+                                        <h6>Resume/Bio Data from the applicant</h6>
+                                        <i class="fa-solid fa-chevron-right"></i>
+                                    </div>
+                                </div>
+
+                                <div class="bus-form-container" style="margin-bottom: 15px;">
+                                    <div class="column" style="background-color: whitesmoke;">
+                                        <h4>Work Experience</h4>
+                                        <h6 id="workExperienceH6">Loading...</h6>
+                                    </div>
+
+                                    <div class="column" style="background-color: whitesmoke;">
+                                        <h4>Address</h4>
+                                        <h6 id="addressH6">Loading...</h6>
+                                    </div>
+                                </div>
+
+                                <div class="bus-form-container" style="margin-bottom: 15px;">
+                                    <div class="column" style="background-color: whitesmoke;">
+                                        <h4>Education</h4>
+                                        <h6 id="educationH6">Loading...</h6>
+                                    </div>
+
+                                    <div id="driversLicenseBtn" class="column" style="background-color: whitesmoke; display: flex; justify-content: space-between; flex-direction: row;">
+                                        <h4>Drivers License</h4>
+                                        <i class="fa-solid fa-chevron-right"></i>
+
+                                    </div>
+                                </div>
+
+                                <div class="bus-form-container" style="margin-bottom: 50px;">
+                                    <div class="column" style="background-color: whitesmoke;">
+                                        <h4>Additional information for the employer</h4>
+                                        <h6 id="addInfoH6">Loading...</h6>
+                                    </div>
+                                </div>
+
+                                <div class="bus-form-container" style="margin-bottom: 15px; display: flex; justify-content: space-evenly;">
+                                    <button id="approveBtn" style="width: 300px; background-color: green;">Approve</button>
+                                    <button id="disapproveBtn" style="width: 300px; background-color: red;">Disapprove</button>
+                                </div> 
+                            </form>
+
+                        </div>
+                    </div>
                 </div>
-    
+
             </div>
         </div>
     </div>
 
-    
 
+
+    <script src="https://www.gstatic.com/firebasejs/3.7.4/firebase.js "></script>
+    <script src="./js/applicants.js" type="module"></script>
     <script src="./js/sidebar.js" type="module"></script>
     <script src="./js/logout.js" type="module"></script>
 

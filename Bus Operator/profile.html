@@ -72,23 +72,66 @@
             </div>
         </div>
 
-        <div class="content-container">
-            <div class="manage-user content">
-                <h1 class="header">Profile</h1>
-                
-                <div class="container">
-                  <div class="card" style="display: flex; flex-direction: column;">
-             
+        <div class="profile content" style="display: block">
+            <h1 class="header">Profile</h1>
+            <div class="container">
+              <div class="card">
     
-                  </div>
+                <div class="profile-container" style="flex-direction: column; margin-bottom: 30px;">
+                  <img src="./images/profile.png" alt="profile" id="profilePhotoId" />
+                  <input type="file" id="addProfilePicBtn">
                 </div>
     
+                <div class="profile-container">
+    
+                  <div class="column">
+                    <h2>Profile</h2>
+                    <div class="form-group">
+                      <label for="fullname">Full Name:</label>
+                      <input type="text" id="profileFullname" name="profileFullname">
+                    </div>
+                    <div class="form-group">
+                      <label for="email">Email:</label>
+                      <input type="email" id="profileEmail" name="profileEmail">
+                    </div>
+                    <div class="form-group">
+                      <label for="contact">Contact Number:</label>
+                      <input type="text" id="profileContact" name="profileContact">
+                    </div>
+                  </div>
+    
+                  <div class="column">
+                    <h2>Password</h2>
+                    <div class="form-group">
+                      <label for="oldPassword">Old Password:</label>
+                      <input type="password" id="profileOldPassword" name="profileOldPassword">
+                    </div>
+                    <div class="form-group">
+                      <label for="newPassword">New Password:</label>
+                      <input type="password" id="profileNewPassword" name="profileNewPassword">
+                    </div>
+                    <div class="form-group">
+                      <label for="confirmPassword">Confirm New Password:</label>
+                      <input type="password" id="profileConfirmPassword" name="profileConfirmPassword">
+                    </div>
+                  </div>
+    
+                </div>
+    
+                <button id="updateProfileButton">Update Profile</button>
+    
+    
+              </div>
             </div>
-        </div>
+    
+    
+          </div>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/3.7.4/firebase.js "></script>
     <script src="./js/sidebar.js" type="module"></script>
     <script src="./js/logout.js" type="module"></script>
+    <script src="./js/profile.js" type="module"></script>
 
 </body>
 
