@@ -99,6 +99,9 @@ window.onload = function() {
 export function fillUserData( ) {
     const myData = JSON.parse(sessionStorage.getItem('currentUser'));
 
+    if (myData === undefined || myData === null) {
+        window.location.href = './../../login.html';
+    }
     // Select the elements in the user detail section
     const userDetail = document.querySelector('.user-detail');
     const imgElement = userDetail.querySelector('img');

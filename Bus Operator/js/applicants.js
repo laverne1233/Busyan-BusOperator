@@ -94,16 +94,14 @@ function retrieveApplicantsData(applicationData) {
     const passengerRef = database.ref(`${DBPaths.PASSENGER}/${applicationData.applicantId}`);
     jobArray = [];
 
-    passengerRef.once('value',
-        (snapshot) => {
-            if (snapshot.exists()) {
-                const passengerKey = snapshot.key;
-                const passengerData = snapshot.val();
-                applicationData['passengerData'] = passengerData;
-                retrieveJobData(applicationData);
-            }
+    passengerRef.once('value', (snapshot) => {
+        if (snapshot.exists()) {
+            const passengerKey = snapshot.key;
+            const passengerData = snapshot.val();
+            applicationData['passengerData'] = passengerData;
+            retrieveJobData(applicationData);
         }
-    )
+    });
 }
 
 function retrieveJobData(applicationData) {
@@ -113,17 +111,16 @@ function retrieveJobData(applicationData) {
     const jobRef = database.ref(`${DBPaths.JOB}/${applicationData.jobId}`);
     jobArray = [];
 
-    jobRef.once('value',
-        (snapshot) => {
-            if (snapshot.exists()) {
-                const jobKey = snapshot.key;
-                const jobData = snapshot.val();
-                jobData['key'] = jobKey;
-                applicationData['jobData'] = jobData;
-                applicantsArray.push(applicationData);
-                createApplicationTables(applicationData);
-            }
+    jobRef.once('value', (snapshot) => {
+        if (snapshot.exists()) {
+            const jobKey = snapshot.key;
+            const jobData = snapshot.val();
+            jobData['key'] = jobKey;
+            applicationData['jobData'] = jobData;
+            applicantsArray.push(applicationData);
+            createApplicationTables(applicationData);
         }
+    }
     )
 }
 
@@ -202,10 +199,10 @@ function viewApplicant(applicationData) {
     addressH6.textContent = convertToPascal(applicationData.address);  // Address details
     educationH6.textContent = convertToPascal(applicationData.educationalAttainment);  // Education details
     addInfoH6.textContent = convertToPascal(applicationData.additionalInfo);  // Additional information
-    resumeBtn.addEventListener('click', function() {
+    resumeBtn.addEventListener('click', function () {
         viewResume(applicationData);
     });
-    driversLicenseBtn.addEventListener('click', function() {
+    driversLicenseBtn.addEventListener('click', function () {
         viewLicense(applicationData);
     });
     showApplicationModal();

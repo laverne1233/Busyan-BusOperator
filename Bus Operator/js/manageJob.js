@@ -52,7 +52,6 @@ let fileNameJobPhoto;
 let fileJobPhoto;
 let questionnaireArray;
 
-
 document.addEventListener('DOMContentLoaded', init);
 addJobBtn.addEventListener('click', addJob);
 jobDeleteBtn.addEventListener('click', deleteJob);
@@ -141,8 +140,6 @@ function addQuestion() {
 
     if (questionText !== '') {  // Only add if there's text
         questionnaireArray.push(questionText);
-        console.log(questionnaireArray);  // Log the updated array
-
     }
 
     createQuestionnaireList(questionnaireArray);
@@ -170,7 +167,6 @@ function createQuestionnaireList(questionnaireArray) {
                 newListItem.remove();  // Remove the list item
                 // Filter out the deleted item from the original array
                 questionnaireArray.splice(questionnaireArray.indexOf(questioner), 1);  // Update the array
-                console.log(questionnaireArray);  // Log the updated array
             });
 
             // Append the list item to the list
@@ -217,7 +213,7 @@ function editJob(jobData) {
     qualificationsTextArea.value = jobData.qualifications;
     applicationInstructionsTextArea.value = jobData.applicationInstructions;
     aboutCompanyTextArea.value = jobData.aboutCompany;
-    questionnaireArray = jobData.questionnaires;
+    questionnaireArray = jobData.questionnaires === undefined ? [] : jobData.questionnaires;
     createQuestionnaireList(questionnaireArray);
     showJobForm();
 }
