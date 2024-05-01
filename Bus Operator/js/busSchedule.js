@@ -54,9 +54,12 @@ function generateBusSchedules() {
                 const busSchedKey = busSched.key;
                 const busSchedData = busSched.val();
                 busSchedData["key"] = busSchedKey;
-                busSchedArray.push(busSchedData);
 
-                createBusSchedTables(busSchedData);
+                if (busSchedData.companyId === myData.companyId) {
+                    busSchedArray.push(busSchedData);
+                    createBusSchedTables(busSchedData);
+                }
+
             });
         }
     )
@@ -68,7 +71,7 @@ function handleSearchBusSched() {
 
     const searchTerm = searchBusSchedInput.value.toLowerCase().trim();
 
-    const results = busSchedArray.filter(item => 
+    const results = busSchedArray.filter(item =>
         item.driverFullname.toLowerCase().includes(searchTerm));
 
     results.forEach(result => {
@@ -115,8 +118,8 @@ function createBusSchedTables(busSchedData) {
     busDriverTd.textContent = busSchedData.driverFullname;
 
     const assConductorTd = document.createElement("td");
-    assConductorTd.textContent = busSchedData.conductorFullname === '' ? 
-                                'N/A' : busSchedData.conductorFullname;
+    assConductorTd.textContent = busSchedData.conductorFullname === '' ?
+        'N/A' : busSchedData.conductorFullname;
 
     const startDateTd = document.createElement("td");
     startDateTd.textContent = busSchedData.startDate;
@@ -251,9 +254,9 @@ function createBusSchedule() {
         conductorFullname: conductorFullnameInput.value,
         datetimeAdded: new Date().toISOString(),
         busOperatorId: myData.key,
-        company: myData.companyName
+        companyName: myData.companyName,
+        companyId: myData.companyId,
     };
-    
 
     const id = getCurrentDateTimeInMillis();
 
@@ -287,7 +290,7 @@ function updateBusSchedule() {
         conductorFullname: conductorFullnameInput.value,
         busOperatorId: myData.key
     };
-    
+
 
     const busSchedRef = firebase.database().ref(`${DBPaths.BUS_SCHED}/${busSchedId}`);
     busSchedRef.update(busDetails)

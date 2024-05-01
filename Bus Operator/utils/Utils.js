@@ -70,3 +70,17 @@ export const convertToDDMMMYYYY = (isoDateString) => {
 
     return formattedDate;  // Return the formatted date
 }
+
+export const convertToMMDDYY = (isoString) => {
+    const date = new Date(isoString);
+
+    if(date == 'Invalid Date') {
+        return isoString;
+    }
+
+    const month = date.getMonth() + 1; // Months are zero-based, so add 1
+    const day = date.getDate();
+    const year = date.getFullYear() % 100; // Get the last two digits of the year
+
+    return `${month}/${day}/${year}`;
+}

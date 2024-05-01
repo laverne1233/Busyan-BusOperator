@@ -1,15 +1,20 @@
+import { convertToMMDDYY } from '/Bus Operator/utils/Utils.js';
+
 import firebaseConfig from '/CONFIG.js';
 import { DBPaths } from '/Bus Operator/js/DB.js';
 
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
+const myData = JSON.parse(sessionStorage.getItem('currentUser'));
+
+const table = document.getElementById("applicant-table");
+const busOrgContainer = document.querySelector('.bus-op-content');
 
 let busOpArray = [];
 
 document.addEventListener('DOMContentLoaded', generateBusOperators);
 
 function generateBusOperators() {
-    const busOrgContainer = document.querySelector('.bus-op-content');
 
     busOrgContainer.innerHTML = "";
     busOpArray = [];
@@ -23,9 +28,9 @@ function generateBusOperators() {
                 const opKey = op.key;
                 const opData = op.val();
                 opData["key"] = opKey;
-                busOpArray.push(opData);
 
-                createBusDriversCard(opData);
+                    busOpArray.push(opData);
+                    createBusDriversCard(opData);
             });
 
             getSnapshotCounts((error, counts) => {
@@ -194,68 +199,88 @@ function generateEmployeeTable() {
 
     const opRef3 = database.ref(`${DBPaths.EMPLOYEES}`);
 
-
-    // opRef.once('value',
-    //     (snapshot) => {
-
-
     opRef3.once('value',
         (snapshots) => {
             snapshots.forEach(applicant => {
 
-                console.log(applicant.val());
+                const role = applicant.val().type;
+                const id = applicant.key;
+                const empData = applicant.val()
 
-                const role = applicant.val().employee_type;
-                const id = applicant.val().user_id;
-                console.log(id);
-                getUserDetails(role, id);
-
+                if (empData.companyId === myData.companyId) {
+                    createEmployeeTable(empData);
+                }
+                
             });
         })
         .catch(error => {
             // Handle any errors
             callback(error, null);
         });
+}
 
-    function getUserDetails(role, id) {
+function createEmployeeTable(empData) {
+     /// Get the data from the snapshot
+    //  const data = childSnapshot.val();
 
-        const table = document.getElementById("applicant-table");
-        const ref = database.ref(`${DBPaths.BUS_DRIVERS}`);
+     // Create a new table row
+     const row = document.createElement("tr");
 
-        // Perform a query to search for the value
-        ref.orderByChild('driverId').equalTo(id).once('value')
-            .then(snapshot => {
-                // Iterate over the results
-                snapshot.forEach(childSnapshot => {
-                    /// Get the data from the snapshot
-                    const data = childSnapshot.val();
+     // Create table cells and set their content
+     const fullNameCell = document.createElement("td");
+     fullNameCell.textContent = empData.fullName;
+     row.appendChild(fullNameCell);
 
-                    // Create a new table row
-                    const row = document.createElement("tr");
+     const positionCell = document.createElement("td");
+     positionCell.textContent = empData.type;
+     row.appendChild(positionCell);
 
-                    // Create table cells and set their content
-                    const fullNameCell = document.createElement("td");
-                    fullNameCell.textContent = data.fullName;
-                    row.appendChild(fullNameCell);
+     const hiredDateCell = document.createElement("td");
+     // hiredDateCell.textContent = applicant.hiredDate;
+     hiredDateCell.textContent = convertToMMDDYY(empData.datetimeAdded);
+     row.appendChild(hiredDateCell);
 
-                    const positionCell = document.createElement("td");
-                    positionCell.textContent = role;
-                    row.appendChild(positionCell);
+     // Append the row to the table
+     table.appendChild(row);
+}
 
-                    const hiredDateCell = document.createElement("td");
-                    // hiredDateCell.textContent = applicant.hiredDate;
-                    hiredDateCell.textContent = 'N/A';
-                    row.appendChild(hiredDateCell);
+function getUserDetails(role, id) {
 
-                    // Append the row to the table
-                    table.appendChild(row);
-                });
-            })
-            .catch(error => {
-                // Handle any errors
-                console.error("Error searching for snapshot:", error);
-            }
-            );
+    const ref = database.ref(`${DBPaths.BUS_DRIVERS}`);
 
-    }
+    // Perform a query to search for the value
+    ref.orderByChild('driverId').equalTo(id).once('value')
+        .then(snapshot => {
+            // Iterate over the results
+            snapshot.forEach(childSnapshot => {
+                /// Get the data from the snapshot
+                const data = childSnapshot.val();
+
+                // Create a new table row
+                const row = document.createElement("tr");
+
+                // Create table cells and set their content
+                const fullNameCell = document.createElement("td");
+                fullNameCell.textContent = data.fullName;
+                row.appendChild(fullNameCell);
+
+                const positionCell = document.createElement("td");
+                positionCell.textContent = role;
+                row.appendChild(positionCell);
+
+                const hiredDateCell = document.createElement("td");
+                // hiredDateCell.textContent = applicant.hiredDate;
+                hiredDateCell.textContent = 'N/A';
+                row.appendChild(hiredDateCell);
+
+                // Append the row to the table
+                table.appendChild(row);
+            });
+        })
+        .catch(error => {
+            // Handle any errors
+            console.error("Error searching for snapshot:", error);
+        }
+        );
+
 }

@@ -46,7 +46,8 @@ function init() {
     });
 
     generateBuses();
-    
+    initMap();
+
     setInterval(function () {
         // Call initMap function to start the process
         if (busTrackingContent && window.getComputedStyle(busTrackingContent).display !== 'none') {
@@ -90,9 +91,13 @@ function generateBuses() {
                 const busDriverKey = busDriver.key;
                 const busDriverData = busDriver.val();
                 busDriverData["key"] = busDriverKey;
-                busDriverArray.push(busDriverData);
 
-                generateBusesTables(busDriverData);
+                if (busDriverData.companyId === myData.companyId) {
+                    busDriverArray.push(busDriverData);
+                    generateBusesTables(busDriverData);
+                }
+
+                
             });
         }
     )
@@ -196,7 +201,9 @@ function saveDataInDb() {
             endPoint: endPoint.value,
             plateNumber: plateNumber.value.toUpperCase(),
             datetimeAdded: new Date().toISOString(),
-            busOperatorId: myData.key 
+            companyName: myData.companyName,
+            companyId: myData.companyId,
+            busOperatorId: myData.key
         };
 
         const busDetailsRef = database.ref(`${DBPaths.BUS_DETAILS}/${id}`);
@@ -405,6 +412,7 @@ function getLiveCoordinates(dataRef, dataType) {
             const dataKey = dataSnapshot.key;
             const dataValue = dataSnapshot.val();
             dataValue["key"] = dataKey;
+            
             liveElements.push(dataValue);
 
             const coordinates = {

@@ -75,19 +75,38 @@ function generateApplicants() {
         (snapshot) => {
             snapshot.forEach((application) => {
 
-
                 const applicationKey = application.key;
                 const applicationData = application.val();
+                applicationData["key"] = applicationKey;
 
-                if (applicationData.status.toLowerCase() == 'Pending'.toLowerCase()) {
-                    applicationData["key"] = applicationKey;
-                    retrieveApplicantsData(applicationData);
-                }
-
+                getJobDetails(applicationData)
             });
         }
     )
 }
+
+function getJobDetails(applicationData) {
+
+    const ref = database.ref(`${DBPaths.JOB}/${applicationData.jobId}`);
+    const status = 'pending'
+
+    ref.once('value',
+        (snapshot) => {
+
+            if (snapshot.exists()) {
+
+                const jobData = snapshot.val();
+                
+                if (applicationData.status.toLowerCase() == status &&
+                    jobData.companyId === myData.companyId
+                ) {
+                    retrieveApplicantsData(applicationData);
+                }
+            }
+        }
+    )
+}
+
 
 function retrieveApplicantsData(applicationData) {
 

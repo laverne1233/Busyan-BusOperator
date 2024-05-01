@@ -88,9 +88,12 @@ function generateJobs() {
                 const jobKey = job.key;
                 const jobData = job.val();
                 jobData["key"] = jobKey;
-                jobArray.push(jobData);
 
-                createJobCard(jobData);
+                if (jobData.companyId === myData.companyId) {
+                    jobArray.push(jobData);
+                    createJobCard(jobData);
+                }
+
             });
         }
     )
@@ -179,7 +182,7 @@ function createQuestionnaireList(questionnaireArray) {
 function addJob() {
     action = 'Add';
     jobTitleInput.value = '';  // Clear Job Title
-    companyNameInput.value = '';  // Clear Company Name
+    companyNameInput.value = myData.companyName;  // Clear Company Name
     companyAddressInput.value = '';  // Clear Company Address
     salaryInput.value = '';  // Clear Salary
 
@@ -311,7 +314,6 @@ function uploadCompanyImage() {
 function createJob(downloadURL) {
     const jobData = {
         title: jobTitleInput.value,  // Job Title
-        company: companyNameInput.value,  // Company Name
         location: companyAddressInput.value,  // Company Address
         salary: salaryInput.value,  // Salary
         companyPhotoUrl: downloadURL,  // Employee Photo source
@@ -322,7 +324,9 @@ function createJob(downloadURL) {
         aboutCompany: aboutCompanyTextArea.value,  // About the Company
         questionnaires: questionnaireArray,
         postDate: convertToDDMMMYYYY(new Date().toISOString()),
-        busOperatorId: myData.key
+        busOperatorId: myData.key,
+        companyName: myData.companyName,
+        companyId: myData.companyId
     };
 
     const id = getCurrentDateTimeInMillis();

@@ -90,9 +90,12 @@ function generateEmployees() {
                 const empKey = busDriver.key;
                 const empData = busDriver.val();
                 empData["key"] = empKey;
-                empArray.push(empData);
 
-                createEmpTables(empData);
+                if (empData.companyId === myData.companyId) {
+                    empArray.push(empData);
+                    createEmpTables(empData);
+                }
+
             });
         }
     )
@@ -320,6 +323,8 @@ function createAccount(empImgUrl) {
         imageUrl: empImgUrl,
         type: convertToPascal(empTypeInput.value),
         busOperatorId: myData.key,
+        companyName: myData.companyName,
+        companyId: myData.companyId,
         datetimeAdded: new Date().toISOString()
     };
 
@@ -478,9 +483,11 @@ function generateReports() {
                 const empReportKey = report.key;
                 const empReportData = report.val();
                 empReportData["key"] = empReportKey;
-                empReportArray.push(empReportData);
 
-                createEmpReportTables(empReportData);
+                if (empReportData.companyId === myData.companyId) {
+                    empReportArray.push(empReportData);
+                    createEmpReportTables(empReportData);
+                }
             });
         }
     )
@@ -656,6 +663,8 @@ function createReport() {
         over_time: convertTo12Hour(overTimeInput.value),
         day_off: dayOffInput.value,
         busOperatorId: myData.key,
+        companyName: myData.companyName,
+        companyId: myData.companyId,
         datetimeAdded: new Date().toISOString()
     };
 
@@ -795,9 +804,12 @@ function generatePayStatements() {
                 const empStatementKey = Statement.key;
                 const empStatementData = Statement.val();
                 empStatementData["key"] = empStatementKey;
-                empStatementArray.push(empStatementData);
 
-                createEmpStatementTables(empStatementData);
+                if (empStatementData.companyId === myData.companyId) {
+                    empStatementArray.push(empStatementData);
+                    createEmpStatementTables(empStatementData);
+                }
+
             });
         }
     )
@@ -1060,7 +1072,10 @@ function createStatement() {
         savings: savingsInput.value,
         loan: loanInput.value,
         statusActive: statusInputActive.checked,
+
         busOperatorId: myData.key,
+        companyName: myData.companyName,
+        companyId: myData.companyId,
 
         datetimeAdded: new Date().toISOString()
     };
