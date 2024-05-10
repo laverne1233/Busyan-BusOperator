@@ -15,4 +15,5 @@ export const DBPaths = {
     LOGIN_NOTIF: 'LoginNotification',
     LIVE_DRIVERS: 'LiveDrivers',
     LIVE_PASSENGERS: 'LivePassengers',
+    NOTIFICATIONS: 'Notifications',
 }

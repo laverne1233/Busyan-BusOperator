@@ -87,13 +87,23 @@
 
             <div class="applicants content">
                 <h1 class="header">Applicants</h1>
-                <div class="container">
+                <div style="display: flex; flex-direction: column;">
 
-                    <div class="card" id="applicantsCardId">
+                    <div class="card" class="applicantsCardId" style="min-height: calc(100vh/3); overflow: auto;">
                         <div class="wrap">
                             <div class="search">
                                 <input id="searchApplicantsInput" type="text" class="searchTerm" placeholder="Search by Work Experience" />
-                                <table id="bus-table" c lass="reports-table"></table>
+                                <h3>List of Applicants</h3>
+                                <table id="bus-table" ></table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" class="applicantsCardId" style="min-height: calc(100vh/3); overflow: auto;">
+                        <div class="wrap">
+                            <div class="search">
+                                <h3>Recommended Applicants</h3>
+                                <table id="bus-table-preference"></table>
                             </div>
                         </div>
                     </div>

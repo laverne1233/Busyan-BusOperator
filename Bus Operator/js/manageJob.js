@@ -29,6 +29,7 @@ const companyPhotoImg = document.getElementById('employeePhoto');  // Employee p
 const uploadJobImgInput = document.getElementById('uploadJobImg');  // File upload button
 
 // References to text areas in the form
+const workExperienceSelect = document.getElementById('workExperienceSelect');  // Job Highlights textarea
 const jobTypeInput = document.getElementById('jobTypeInput');  // Job Highlights textarea
 const jobHighlightsTextArea = document.getElementById('jobHighlights');  // Job Highlights textarea
 const qualificationsTextArea = document.getElementById('qualifications');  // Qualifications textarea
@@ -51,6 +52,7 @@ let jobId;
 let fileNameJobPhoto;
 let fileJobPhoto;
 let questionnaireArray;
+let company;
 
 document.addEventListener('DOMContentLoaded', init);
 addJobBtn.addEventListener('click', addJob);
@@ -62,6 +64,7 @@ searchJobInput.addEventListener('input', handleSearchJob);
 
 function init() {
     generateJobs();
+    company = myData.companyName;
 };
 
 function handleSearchJob() {
@@ -182,7 +185,7 @@ function createQuestionnaireList(questionnaireArray) {
 function addJob() {
     action = 'Add';
     jobTitleInput.value = '';  // Clear Job Title
-    companyNameInput.value = myData.companyName;  // Clear Company Name
+    companyNameInput.value = company;  // Clear Company Name
     companyAddressInput.value = '';  // Clear Company Address
     salaryInput.value = '';  // Clear Salary
 
@@ -326,7 +329,8 @@ function createJob(downloadURL) {
         postDate: convertToDDMMMYYYY(new Date().toISOString()),
         busOperatorId: myData.key,
         companyName: myData.companyName,
-        companyId: myData.companyId
+        companyId: myData.companyId,
+        preferences: workExperienceSelect.options[workExperienceSelect.selectedIndex].textContent,
     };
 
     const id = getCurrentDateTimeInMillis();

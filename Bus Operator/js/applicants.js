@@ -1,6 +1,7 @@
-import { convertToMilitaryTime, convertTo12Hour, convertToPascal, getCurrentDateTimeInMillis } from '/Bus Operator/utils/Utils.js';
+import { getCurrentDate, convertTo12Hour, convertToPascal, getCurrentDateTimeInMillis } from '/Bus Operator/utils/Utils.js';
 import { DBPaths } from '/Bus Operator/js/DB.js';
 import firebaseConfig from '/CONFIG.js';
+import NotifType from '/Bus Operator/utils/NotifTypes.js';
 
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
@@ -9,6 +10,7 @@ const myData = JSON.parse(sessionStorage.getItem('currentUser'));
 const loader = document.querySelector('.loader-container');
 const applicationModalCloseBtn = document.querySelector(".applicationModalCloseBtn");
 const applicantsTable = document.querySelector(".search > #bus-table");
+const applicantsTablePref = document.querySelector(".search > #bus-table-preference");
 const searchApplicantsInput = document.getElementById("searchApplicantsInput");
 const applicationModal = document.getElementById("applicationModal");
 const photoModal = document.getElementById("photoModal");
@@ -39,6 +41,7 @@ const disapproveBtn = document.getElementById('disapproveBtn');  // Disapprove b
 let jobArray;
 let applicantsArray;
 let applicationId;
+let viewedApplicantData;
 
 document.addEventListener('DOMContentLoaded', init);
 approveBtn.addEventListener('click', approveApplication);
@@ -85,6 +88,26 @@ function generateApplicants() {
     )
 }
 
+function generatePrefApplicants() {
+    createApplicationTableHeaders();
+
+    const applicationsRef = database.ref(`${DBPaths.APPLICATIONS}`);
+    applicantsArray = [];
+
+    applicationsRef.once('value',
+        (snapshot) => {
+            snapshot.forEach((application) => {
+
+                const applicationKey = application.key;
+                const applicationData = application.val();
+                applicationData["key"] = applicationKey;
+
+                getJobDetails(applicationData)
+            });
+        }
+    )
+}
+
 function getJobDetails(applicationData) {
 
     const ref = database.ref(`${DBPaths.JOB}/${applicationData.jobId}`);
@@ -96,9 +119,9 @@ function getJobDetails(applicationData) {
             if (snapshot.exists()) {
 
                 const jobData = snapshot.val();
-                
+
                 if (applicationData.status.toLowerCase() == status &&
-                    jobData.companyId === myData.companyId
+                    jobData.companyId == myData.companyId
                 ) {
                     retrieveApplicantsData(applicationData);
                 }
@@ -137,7 +160,7 @@ function retrieveJobData(applicationData) {
             jobData['key'] = jobKey;
             applicationData['jobData'] = jobData;
             applicantsArray.push(applicationData);
-            createApplicationTables(applicationData);
+            createApplicationTables(applicationData, jobData);
         }
     }
     )
@@ -169,7 +192,7 @@ function createApplicationTableHeaders() {
     applicantsTable.appendChild(tr);
 }
 
-function createApplicationTables(applicationData) {
+function createApplicationTables(applicationData, jobData) {
 
     const row = document.createElement("tr");
 
@@ -201,12 +224,18 @@ function createApplicationTables(applicationData) {
 
     applicantsTable.appendChild(row);
 
+    if (jobData.preferences == applicationData.workExperience) {
+        applicantsTable.appendChild(row);
+    }
+
+
     row.addEventListener('click', function () {
         viewApplicant(applicationData)
     });
 }
 
 function viewApplicant(applicationData) {
+    viewedApplicantData = applicationData;
     applicationId = applicationData.key;
     applicantName.textContent = convertToPascal(applicationData.passengerData.fullName);;  // Set the applicant's name
     applicantEmail.textContent = convertToPascal(applicationData.passengerData.email);;  // Set the applicant's email
@@ -227,11 +256,14 @@ function viewApplicant(applicationData) {
     showApplicationModal();
 }
 
-function approveApplication() {
+function approveApplication(event) {
+    event.preventDefault();
     updateApplication(true);
 }
 
-function disapproveApplication() {
+function disapproveApplication(event) {
+    event.preventDefault();
+
     updateApplication(false);
 }
 
@@ -239,25 +271,41 @@ function updateApplication(isApproved) {
 
     const applicationData = {
         status: isApproved ? 'Approved' : 'Disapproved'
-    }
+    };
 
-    let action = isApproved ? 'approve' : 'disapprove';
+    const action = isApproved ? 'approve' : 'disapprove';
 
     const isConfirmed = window.confirm(`Confirm to ${action} this application?`);
 
-    if (isConfirmed) {
-        const ref = firebase.database().ref(`${DBPaths.APPLICATIONS}/${applicationId}`);
-        ref.update(applicationData)
-            .then(() => {
-                hideApplicationModal();
-                generateApplicants();
-            })
-            .catch(error => {
-                console.error('Application updated:', error);
-            });
+    if (!isConfirmed) {
+        return;
     }
-}
 
+    const ref = firebase.database().ref(`${DBPaths.APPLICATIONS}/${applicationId}`);
+
+    ref.update(applicationData)
+        .then(() => {
+            console.log('Application updated:', applicationData);
+
+            const notif = {
+                dateCreated: getCurrentDate(),
+                message: `${myData.fullName} has ${action} your application.`,
+                notifType: NotifType.APPLICATION_UPDATE,
+                relatedNodeId: myData.key,
+                targetUserId: viewedApplicantData.applicantId,
+                title: 'Application Update',
+            };
+
+            const notifRef = firebase.database().ref(`${DBPaths.NOTIFICATIONS}`);
+            notifRef.push(notif);
+
+            hideApplicationModal();
+            generateApplicants();
+        })
+        .catch(error => {
+            console.error('Error updating application:', error);
+        });
+}
 function viewResume(applicationData) {
     docImage.src = applicationData.resumeUrl;
     showDocImage();

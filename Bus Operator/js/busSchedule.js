@@ -1,7 +1,9 @@
 
-import { convertToMilitaryTime, convertTo12Hour, convertToPascal, getCurrentDateTimeInMillis } from '/Bus Operator/utils/Utils.js';
+import { convertToMilitaryTime, convertTo12Hour, getCurrentDate, getCurrentDateTimeInMillis } from '/Bus Operator/utils/Utils.js';
 import { DBPaths } from '/Bus Operator/js/DB.js';
 import firebaseConfig from '/CONFIG.js';
+import NotifType from '/Bus Operator/utils/NotifTypes.js';
+
 
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
@@ -264,8 +266,28 @@ function createBusSchedule() {
 
     busSchedRef.set(busDetails)
         .then(() => {
-            hideBusSchedForm();
-            console.log(busDetails);
+
+            const loginDetailsData = {
+                dateCreated: getCurrentDate(),
+                message: "New Bus Schedule Added",
+                notifType: NotifType.BUS_SCHEDULE,
+                relatedNodeId: myData.key,
+                targetUserId: busDetails.bus,
+                title: 'Bus Schedule Added',
+            }
+
+            const userRef = database.ref(`${DBPaths.NOTIFICATIONS}`);
+
+            userRef.push(loginDetailsData)
+                .then(() => {
+                    hideBusSchedForm();
+                    console.log(busDetails);
+                })
+                .catch(error => {
+                    // An error occurred while setting data
+                    console.error('Error setting data:', error);
+                });
+
         })
         .catch(error => {
             // An error occurred while setting data

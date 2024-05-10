@@ -332,18 +332,40 @@ function createAccount(empImgUrl) {
 
     const empRef = database.ref(`${DBPaths.EMPLOYEES}/${id}`);
 
-    empRef.set(empData)
+    firebase.auth().createUserWithEmailAndPassword(empData.email, empData.password)
         .then(() => {
-            hideAddBusForm();
-            generateEmployees();
+            // User created successfully
+            empRef.set(empData)
+                .then(() => {
+
+                    if (empData.type.toLowerCase().includes('driver')) {
+                        console.log('driver');
+                        createFirebaseAccount(empData);
+                    }
+
+                    hideAddBusForm();
+                    generateEmployees();
+                })
+                .catch(error => {
+                    // An error occurred while setting data
+                    console.error('Error setting data:', error);
+                });
         })
-        .catch(error => {
-            // An error occurred while setting data
-            console.error('Error setting data:', error);
+        .catch((error) => {
+            // An error occurred while creating the user
+            console.error('Error creating user:', error);
         });
+
+
 
     hideLoader();
 }
+
+async function createFirebaseAccount(empData) {
+    const { email, password } = empData;
+    const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+}
+
 
 function validateImage() {
 

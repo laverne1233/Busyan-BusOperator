@@ -1,4 +1,4 @@
-#applicantsCardId {
+.applicantsCardId {
     display: flex;
     flex-direction: column;
 }
