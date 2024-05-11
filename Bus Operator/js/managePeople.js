@@ -1,6 +1,6 @@
 
-import { convertToMilitaryTime, convertTo12Hour, convertToPascal, getCurrentDateTimeInMillis } from '/Bus Operator/utils/Utils.js';
 import { DBPaths } from '/Bus Operator/js/DB.js';
+import { convertTo12Hour, convertToMilitaryTime, convertToPascal, getCurrentDateTimeInMillis } from '/Bus Operator/utils/Utils.js';
 import firebaseConfig from '/CONFIG.js';
 
 firebase.initializeApp(firebaseConfig);
@@ -332,17 +332,16 @@ function createAccount(empImgUrl) {
 
     const empRef = database.ref(`${DBPaths.EMPLOYEES}/${id}`);
 
-    firebase.auth().createUserWithEmailAndPassword(empData.email, empData.password)
+
+
+    if (empData.type.toLowerCase().includes('driver')) {
+        console.log('driver');
+        firebase.auth().createUserWithEmailAndPassword(empData.email, empData.password)
         .then(() => {
             // User created successfully
             empRef.set(empData)
                 .then(() => {
-
-                    if (empData.type.toLowerCase().includes('driver')) {
-                        console.log('driver');
-                        createFirebaseAccount(empData);
-                    }
-
+                    createFirebaseAccount(empData);
                     hideAddBusForm();
                     generateEmployees();
                 })
@@ -355,6 +354,11 @@ function createAccount(empImgUrl) {
             // An error occurred while creating the user
             console.error('Error creating user:', error);
         });
+    }
+    else {
+        createFirebaseAccount(empData);
+    }
+    
 
 
 
