@@ -49,3 +49,40 @@
 #bus-table td>a {
     margin: 5px;
 }
+
+
+#bus-table-preference,
+#bus-table-preference td,
+#bus-table-preference th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#bus-table-preference tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#bus-table-preference tr:hover {
+    background-color: #ddd;
+}
+
+#bus-table-preference th {
+    padding-top: 8px;
+    padding-bottom: 5px;
+    text-align: center;
+    background-color: #d6cde3;
+    color: black;
+}
+
+#bus-table-preference td > img {
+    width: 30px;
+    height: 30px;
+}
+
+#bus-table-preference td {
+    text-align: center;
+}
+
+#bus-table-preference td>a {
+    margin: 5px;
+}

@@ -52,7 +52,6 @@ let jobId;
 let fileNameJobPhoto;
 let fileJobPhoto;
 let questionnaireArray;
-let company;
 
 document.addEventListener('DOMContentLoaded', init);
 addJobBtn.addEventListener('click', addJob);
@@ -64,7 +63,6 @@ searchJobInput.addEventListener('input', handleSearchJob);
 
 function init() {
     generateJobs();
-    company = myData.companyName;
 };
 
 function handleSearchJob() {
@@ -92,7 +90,7 @@ function generateJobs() {
                 const jobData = job.val();
                 jobData["key"] = jobKey;
 
-                if (jobData.companyId === myData.companyId) {
+                if (jobData.companyName == myData.companyName) {
                     jobArray.push(jobData);
                     createJobCard(jobData);
                 }
@@ -185,7 +183,7 @@ function createQuestionnaireList(questionnaireArray) {
 function addJob() {
     action = 'Add';
     jobTitleInput.value = '';  // Clear Job Title
-    companyNameInput.value = company;  // Clear Company Name
+    companyNameInput.value = myData.companyName;  // Clear Company Name
     companyAddressInput.value = '';  // Clear Company Address
     salaryInput.value = '';  // Clear Salary
 
@@ -203,10 +201,17 @@ function addJob() {
 }
 
 function editJob(jobData) {
+
+
     action = 'Edit';
     jobId = jobData.key;
     jobTitleInput.value = jobData.title;
-    companyNameInput.value = jobData.company;
+    companyNameInput.value = jobData.companyName;
+
+    if (companyNameInput.value == 'undefined') {
+        companyNameInput.value = myData.companyName;
+    }
+
     companyAddressInput.value = jobData.location;
     salaryInput.value = jobData.salary;
 

@@ -9,8 +9,11 @@ const myData = JSON.parse(sessionStorage.getItem('currentUser'));
 
 const loader = document.querySelector('.loader-container');
 const applicationModalCloseBtn = document.querySelector(".applicationModalCloseBtn");
-const applicantsTable = document.querySelector(".search > #bus-table");
-const applicantsTablePref = document.querySelector(".search > #bus-table-preference");
+
+// Applicant table
+const applicantsTable = document.getElementById("bus-table");
+const applicantsTablePref = document.getElementById("bus-table-preference");
+
 const searchApplicantsInput = document.getElementById("searchApplicantsInput");
 const applicationModal = document.getElementById("applicationModal");
 const photoModal = document.getElementById("photoModal");
@@ -121,7 +124,7 @@ function getJobDetails(applicationData) {
                 const jobData = snapshot.val();
 
                 if (applicationData.status.toLowerCase() == status &&
-                    jobData.companyId == myData.companyId
+                    jobData.companeName == myData.companeName
                 ) {
                     retrieveApplicantsData(applicationData);
                 }
@@ -169,7 +172,9 @@ function retrieveJobData(applicationData) {
 function createApplicationTableHeaders() {
 
     applicantsTable.innerHTML = "";
+    applicantsTablePref.innerHTML = "";
     const tr = document.createElement("tr");
+    const tr2 = document.createElement("tr");
 
     // Array of column headers
     const headers = [
@@ -187,9 +192,14 @@ function createApplicationTableHeaders() {
         const th = document.createElement("th");
         th.textContent = headerText;
         tr.appendChild(th);
+
+        const th2 = document.createElement("th");
+        th2.textContent = headerText;
+        tr2.appendChild(th2);
     });
 
     applicantsTable.appendChild(tr);
+    applicantsTablePref.appendChild(tr2);
 }
 
 function createApplicationTables(applicationData, jobData) {
@@ -225,7 +235,7 @@ function createApplicationTables(applicationData, jobData) {
     applicantsTable.appendChild(row);
 
     if (jobData.preferences == applicationData.workExperience) {
-        applicantsTable.appendChild(row);
+        applicantsTablePref.appendChild(row);
     }
 
 
