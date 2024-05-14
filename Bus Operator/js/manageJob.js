@@ -368,7 +368,8 @@ function updateJob(downloadURL) {
         description: jobHighlightsTextArea.value,  // Job Highlights
         qualifications: qualificationsTextArea.value,  // Qualifications
         applicationInstructions: applicationInstructionsTextArea.value,  // Application Instructions
-        questionnaires: questionnaireArray
+        questionnaires: questionnaireArray,
+        preferences: workExperienceSelect.options[workExperienceSelect.selectedIndex].textContent,
     };
 
     const jobRef = firebase.database().ref(`${DBPaths.JOB}/${jobId}`);

@@ -97,7 +97,7 @@ function generateBuses() {
                     generateBusesTables(busDriverData);
                 }
 
-                
+
             });
         }
     )
@@ -337,14 +337,9 @@ async function initMap() {
         await getLiveCoordinates(database.ref(`${DBPaths.LIVE_DRIVERS}`), 'Driver');
         // await getLiveCoordinates(database.ref(`${DBPaths.LIVE_PASSENGERS}`), 'Passenger');
 
-        // Check if any coordinates retrieved
-        if (!allCoor.length) {
-            console.log("No live coordinates found");
-            return; // Exit if no coordinates
-        }
-
         const map = await createMap(); // Create map after coordinates are retrieved
         addMarkersToMap(map); // Add markers to the created map
+
     } catch (error) {
         console.error("Error initializing map:", error);
     }
@@ -354,7 +349,7 @@ async function createMap() {
     const { Map } = await google.maps.importLibrary("maps");
 
     const mapProp = {
-        center: new google.maps.LatLng(9.3338, 123.8941), // Default center
+        center: new google.maps.LatLng(10.338427154183488, 123.91196002289311), // Default center
         zoom: 15,
         disableDefaultUI: true,
         mapId: 'BUS_MAP'
@@ -364,12 +359,18 @@ async function createMap() {
 }
 
 function addMarkersToMap(map) {
-    allCoor.forEach(function (data) {
-        putMarker(map, data);
-        bounds.extend(data);
-    });
 
-    map.fitBounds(bounds);
+    // Check if any coordinates retrieved
+    if (!allCoor.length) {
+        console.log("No live coordinates found");
+    }
+    else {
+        allCoor.forEach(function (data) {
+            putMarker(map, data);
+            bounds.extend(data);
+        });
+        map.fitBounds(bounds);
+    }
 }
 
 function putMarker(map, data) {
@@ -412,7 +413,7 @@ function getLiveCoordinates(dataRef, dataType) {
             const dataKey = dataSnapshot.key;
             const dataValue = dataSnapshot.val();
             dataValue["key"] = dataKey;
-            
+
             liveElements.push(dataValue);
 
             const coordinates = {

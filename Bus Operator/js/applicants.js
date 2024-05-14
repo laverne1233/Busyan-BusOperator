@@ -76,6 +76,7 @@ function generateApplicants() {
 
     const applicationsRef = database.ref(`${DBPaths.APPLICATIONS}`);
     applicantsArray = [];
+    const status = 'pending'
 
     applicationsRef.once('value',
         (snapshot) => {
@@ -85,7 +86,9 @@ function generateApplicants() {
                 const applicationData = application.val();
                 applicationData["key"] = applicationKey;
 
-                getJobDetails(applicationData)
+                if (applicationData.status.toLowerCase() == status) {
+                    getJobDetails(applicationData)
+                }
             });
         }
     )
@@ -114,7 +117,6 @@ function generatePrefApplicants() {
 function getJobDetails(applicationData) {
 
     const ref = database.ref(`${DBPaths.JOB}/${applicationData.jobId}`);
-    const status = 'pending'
 
     ref.once('value',
         (snapshot) => {
@@ -123,7 +125,7 @@ function getJobDetails(applicationData) {
 
                 const jobData = snapshot.val();
 
-                if (applicationData.status.toLowerCase() == status &&
+                if (
                     jobData.companeName == myData.companeName
                 ) {
                     retrieveApplicantsData(applicationData);
