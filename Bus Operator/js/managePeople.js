@@ -326,21 +326,22 @@ function createAccount(empImgUrl) {
         companyName: myData.companyName,
         companyId: myData.companyId,
         datetimeAdded: new Date().toISOString()
-    };
-
-    const id = getCurrentDateTimeInMillis();
-
-    const empRef = database.ref(`${DBPaths.EMPLOYEES}/${id}`);
-
-
+    }; 
 
     if (empData.type.toLowerCase().includes('driver')) {
         console.log('driver');
         firebase.auth().createUserWithEmailAndPassword(empData.email, empData.password)
-        .then(() => {
+        .then((userCredential) => {
             // User created successfully
+
+            const user = userCredential.user;         
+            console.log('userCredential', userCredential);   
+            console.log('user', user);   
+            const empRef = database.ref(`${DBPaths.EMPLOYEES}/${userCredential.uid}`);
+
             empRef.set(empData)
                 .then(() => {
+
                     createFirebaseAccount(empData);
                     hideAddBusForm();
                     generateEmployees();
