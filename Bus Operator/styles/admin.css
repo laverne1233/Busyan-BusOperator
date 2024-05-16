@@ -154,9 +154,10 @@ li {
   box-shadow: 5px 5px 15px lightgray;
   margin: 20px 20px;
   padding: 40px 20px;
-  overflow: hidden; /* Prevent content overflow */
+  overflow: auto; /* Prevent content overflow */
 }
 
 button:hover {
   background-color: #0056b3;
 }
+

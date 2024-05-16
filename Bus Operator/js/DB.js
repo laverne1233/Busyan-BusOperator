@@ -16,4 +16,5 @@ export const DBPaths = {
     LIVE_DRIVERS: 'LiveDrivers',
     LIVE_PASSENGERS: 'LivePassengers',
     NOTIFICATIONS: 'Notifications',
+    REVISION_REQUESTS: 'RevisionRequest',
 }
