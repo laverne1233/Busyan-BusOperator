@@ -1,4 +1,4 @@
-import { getCurrentDate, convertTo12Hour, convertToPascal, getCurrentDateTimeInMillis } from '/Bus Operator/utils/Utils.js';
+import { getCurrentDate, convertToDDMMMYYYY, convertToPascal, getCurrentDateTimeInMillis } from '/Bus Operator/utils/Utils.js';
 import { DBPaths } from '/Bus Operator/js/DB.js';
 import firebaseConfig from '/CONFIG.js';
 import NotifType from '/Bus Operator/utils/NotifTypes.js';
@@ -21,6 +21,7 @@ const docImage = document.getElementById("docImage");
 const docCloseBtn = document.querySelector(".docCloseBtn");
 
 // Applicant information
+const applicantAnswers = document.getElementById('applicantAnswers');  // Applicant name
 const applicantName = document.getElementById('applicantName');  // Applicant name
 const applicantEmail = document.getElementById('applicantEmail');  // Applicant email
 const applicantPhoneNum = document.getElementById('applicantPhoneNum');  // Applicant phone number
@@ -249,7 +250,8 @@ function createApplicationTables(applicationData, jobData) {
 function viewApplicant(applicationData) {
     viewedApplicantData = applicationData;
     applicationId = applicationData.key;
-    applicantName.textContent = convertToPascal(applicationData.passengerData.fullName);;  // Set the applicant's name
+    createApplicantsAnswersItem(applicationData);
+    applicantName.textContent = convertToPascal(applicationData.passengerData.fullName);  // Set the applicant's name
     applicantEmail.textContent = convertToPascal(applicationData.passengerData.email);;  // Set the applicant's email
     applicantPhoneNum.textContent = convertToPascal(applicationData.passengerData.phoneNum);;  // Set the applicant's phone number
     applicantPhoto.src = applicationData.passengerData.imageUrl;
@@ -299,25 +301,18 @@ function updateApplication(isApproved) {
         .then(() => {
             console.log('Application updated:', applicationData);
 
-            const notif = {
-                dateCreated: getCurrentDate(),
-                message: `${myData.fullName} has ${action} your application.`,
-                notifType: NotifType.APPLICATION_UPDATE,
-                relatedNodeId: myData.key,
-                targetUserId: viewedApplicantData.applicantId,
-                title: 'Application Update',
-            };
+            saveInApplicationHistoryDb(action);
 
-            const notifRef = firebase.database().ref(`${DBPaths.NOTIFICATIONS}`);
-            notifRef.push(notif);
-
-            hideApplicationModal();
-            generateApplicants();
+            
+            
         })
         .catch(error => {
             console.error('Error updating application:', error);
         });
 }
+
+
+
 function viewResume(applicationData) {
     docImage.src = applicationData.resumeUrl;
     showDocImage();
@@ -345,4 +340,72 @@ function hideDocImage() {
 }
 
 
+function saveInApplicationHistoryDb(action) {
 
+    const data = {
+        fullName: viewedApplicantData.passengerData.fullName,
+        position: viewedApplicantData.jobData.title,
+        status: action,
+        date: convertToDDMMMYYYY(new Date().toISOString()),
+        companyId: myData.companyId,
+        companyName: myData.companyName,
+        jobId: viewedApplicantData.jobId,
+        applicantId: viewedApplicantData.passengerData.fullName
+    };
+
+    const id = getCurrentDateTimeInMillis();
+
+    const jobRef = database.ref(`${DBPaths.APPLICATIONS_HISTORY}/${id}`);
+
+    jobRef.set(data)
+        .then(() => {
+
+            const notif = {
+                dateCreated: getCurrentDate(),
+                message: `${myData.fullName} has ${action} your application.`,
+                notifType: NotifType.APPLICATION_UPDATE,
+                relatedNodeId: myData.key,
+                targetUserId: viewedApplicantData.applicantId,
+                title: 'Application Update',
+            };
+
+            const notifRef = firebase.database().ref(`${DBPaths.NOTIFICATIONS}`);
+            notifRef.push(notif);
+
+
+            hideApplicationModal();
+            generateApplicants();
+        })
+        .catch(error => {
+            // An error occurred while setting data
+            console.error('Error setting data:', error);
+        });
+
+
+    
+}
+
+function createApplicantsAnswersItem(applicationData) {
+
+    const questionnaires = applicationData.qaSets;
+    console.log(applicationData.qaSets[0][0]);
+
+    if (Array.isArray(questionnaires) && questionnaires.length > 0) {
+
+
+        for (let i = 0; i < questionnaires.length; i++) {
+            const li = document.createElement('li');
+            const questionSpan = document.createElement('span');
+            const answerSpan = document.createElement('h3');
+            questionSpan.textContent = `${applicationData.qaSets[i][0]}   ${applicationData.qaSets[i][1]}`;
+            li.appendChild(questionSpan);
+            // li.appendChild(answerSpan);
+            applicantAnswers.appendChild(li);
+        }
+
+        
+    }
+
+    
+
+}

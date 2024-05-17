@@ -1,5 +1,6 @@
 export const DBPaths = {
     APPLICATIONS: 'Applications',
+    APPLICATIONS_HISTORY: 'ApplicationsHistory',
     PASSENGER: 'Passengers',
     BUS_DETAILS: 'BusDetails',
     BUS_COOP: 'BusCooperatives',

@@ -29,8 +29,8 @@ function generateBusOperators() {
                 const opData = op.val();
                 opData["key"] = opKey;
 
-                    busOpArray.push(opData);
-                    createBusDriversCard(opData);
+                busOpArray.push(opData);
+                createBusDriversCard(opData);
             });
 
             getSnapshotCounts((error, counts) => {
@@ -197,7 +197,7 @@ function generateChart(passengerCount, busDriversCount, empCount) {
 
 function generateEmployeeTable() {
 
-    const opRef3 = database.ref(`${DBPaths.EMPLOYEES}`);
+    const opRef3 = database.ref(`${DBPaths.APPLICATIONS_HISTORY}`);
 
     opRef3.once('value',
         (snapshots) => {
@@ -207,10 +207,10 @@ function generateEmployeeTable() {
                 const id = applicant.key;
                 const empData = applicant.val()
 
-                if (empData.companyId === myData.companyId) {
+                if (empData.companyName === myData.companyName) {
                     createEmployeeTable(empData);
                 }
-                
+
             });
         })
         .catch(error => {
@@ -220,28 +220,28 @@ function generateEmployeeTable() {
 }
 
 function createEmployeeTable(empData) {
-     /// Get the data from the snapshot
+    /// Get the data from the snapshot
     //  const data = childSnapshot.val();
 
-     // Create a new table row
-     const row = document.createElement("tr");
+    // Create a new table row
+    const row = document.createElement("tr");
 
-     // Create table cells and set their content
-     const fullNameCell = document.createElement("td");
-     fullNameCell.textContent = empData.fullName;
-     row.appendChild(fullNameCell);
+    // Create table cells and set their content
+    const fullNameCell = document.createElement("td");
+    fullNameCell.textContent = empData.fullName;
+    row.appendChild(fullNameCell);
 
-     const positionCell = document.createElement("td");
-     positionCell.textContent = empData.type;
-     row.appendChild(positionCell);
+    const positionCell = document.createElement("td");
+    positionCell.textContent = empData.position;
+    row.appendChild(positionCell);
 
-     const hiredDateCell = document.createElement("td");
-     // hiredDateCell.textContent = applicant.hiredDate;
-     hiredDateCell.textContent = convertToMMDDYY(empData.datetimeAdded);
-     row.appendChild(hiredDateCell);
+    const hiredDateCell = document.createElement("td");
+    // hiredDateCell.textContent = applicant.hiredDate;
+    hiredDateCell.textContent = convertToMMDDYY(empData.date);
+    row.appendChild(hiredDateCell);
 
-     // Append the row to the table
-     table.appendChild(row);
+    // Append the row to the table
+    table.appendChild(row);
 }
 
 function getUserDetails(role, id) {

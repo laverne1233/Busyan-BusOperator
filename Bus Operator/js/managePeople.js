@@ -342,7 +342,6 @@ function createAccount(empImgUrl) {
             empRef.set(empData)
                 .then(() => {
 
-                    createFirebaseAccount(empData);
                     hideAddBusForm();
                     generateEmployees();
                 })
@@ -357,8 +356,20 @@ function createAccount(empImgUrl) {
         });
     }
     else {
-        createFirebaseAccount(empData);
-    }
+
+        const id = getCurrentDateTimeInMillis();       
+        const empRef = database.ref(`${DBPaths.EMPLOYEES}/${id}`);
+
+        empRef.set(empData)
+            .then(() => {
+
+                hideAddBusForm();
+                generateEmployees();
+            })
+            .catch(error => {
+                // An error occurred while setting data
+                console.error('Error setting data:', error);
+            });    }
     
 
 
