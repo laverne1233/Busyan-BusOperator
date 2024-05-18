@@ -360,6 +360,7 @@ async function createMap() {
 
 function addMarkersToMap(map) {
 
+    
     // Check if any coordinates retrieved
     if (!allCoor.length) {
         console.log("No live coordinates found");
@@ -407,6 +408,7 @@ function putMarker(map, data) {
 
 function getLiveCoordinates(dataRef, dataType) {
     const liveElements = []; // Assuming liveElements is where you store retrieved data
+    allCoor = [];
 
     return dataRef.once('value').then((snapshot) => {
         snapshot.forEach((dataSnapshot) => {

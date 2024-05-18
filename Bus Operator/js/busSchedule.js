@@ -258,6 +258,7 @@ function createBusSchedule() {
         busOperatorId: myData.key,
         companyName: myData.companyName,
         companyId: myData.companyId,
+        isApproved: false
     };
 
     const id = getCurrentDateTimeInMillis();

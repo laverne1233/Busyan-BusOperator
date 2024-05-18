@@ -152,26 +152,6 @@ function retrieveApplicantsData(applicationData) {
     });
 }
 
-function retrieveJobData(applicationData) {
-
-    applicantsArray = [];
-
-    const jobRef = database.ref(`${DBPaths.JOB}/${applicationData.jobId}`);
-    jobArray = [];
-
-    jobRef.once('value', (snapshot) => {
-        if (snapshot.exists()) {
-            const jobKey = snapshot.key;
-            const jobData = snapshot.val();
-            jobData['key'] = jobKey;
-            applicationData['jobData'] = jobData;
-            applicantsArray.push(applicationData);
-            createApplicationTables(applicationData, jobData);
-        }
-    }
-    )
-}
-
 function createApplicationTableHeaders() {
 
     applicantsTable.innerHTML = "";
@@ -205,8 +185,34 @@ function createApplicationTableHeaders() {
     applicantsTablePref.appendChild(tr2);
 }
 
-function createApplicationTables(applicationData, jobData) {
+function retrieveJobData(applicationData) {
 
+    applicantsArray = [];
+
+    const jobRef = database.ref(`${DBPaths.JOB}/${applicationData.jobId}`);
+    jobArray = [];
+
+    jobRef.once('value', (snapshot) => {
+        if (snapshot.exists()) {
+            const jobKey = snapshot.key;
+            const jobData = snapshot.val();
+            jobData['key'] = jobKey;
+            applicationData['jobData'] = jobData;
+            applicantsArray.push(applicationData);
+
+            if (jobData.preferences == applicationData.workExperience) {
+                createApplicationTableRow(applicationData, applicantsTablePref);
+            } else {
+                createApplicationTableRow(applicationData, applicantsTable);
+            }
+        }
+    }
+    )
+}
+
+
+
+function createApplicationTableRow(applicationData, table) {
     const row = document.createElement("tr");
 
     const applicantIdNoTd = document.createElement("td");
@@ -235,15 +241,10 @@ function createApplicationTables(applicationData, jobData) {
     row.appendChild(address);
     // row.appendChild(actionsTd);
 
-    applicantsTable.appendChild(row);
+    table.appendChild(row);
 
-    if (jobData.preferences == applicationData.workExperience) {
-        applicantsTablePref.appendChild(row);
-    }
-
-
-    row.addEventListener('click', function () {
-        viewApplicant(applicationData)
+    row.addEventListener("click", function () {
+        viewApplicant(applicationData);
     });
 }
 
@@ -388,8 +389,7 @@ function saveInApplicationHistoryDb(action) {
 function createApplicantsAnswersItem(applicationData) {
 
     const questionnaires = applicationData.qaSets;
-    console.log(applicationData.qaSets[0][0]);
-
+    applicantAnswers.innerHTML = '';
     if (Array.isArray(questionnaires) && questionnaires.length > 0) {
 
 
