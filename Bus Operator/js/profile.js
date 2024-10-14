@@ -12,9 +12,9 @@ const profilePhoto = document.getElementById('profilePhotoId');
 const fullName = document.getElementById('profileFullname');
 const email = document.getElementById('profileEmail');
 const contact = document.getElementById('profileContact');
-const oldPassword = document.getElementById('profileOldPassword');
-const newPassword = document.getElementById('profileNewPassword');
-const confirmPassword = document.getElementById('profileConfirmPassword');
+const coopImage = document.getElementById('coopImage');
+const companyAddressElement = document.querySelector('.company-address-text');
+const companyDescriptionElement = document.querySelector('.company-description-text');
 
 let fileName;
 let file;
@@ -38,61 +38,56 @@ window.addEventListener('load', function () {
 
 function fillProfile() {
 
-    const imgPlaceHolder = '/Bus Cooperative/images/profile.png';
+    const imgPlaceHolder = '/Bus Operator/images/profile.png';
+    const imgPlaceHolde2 = '/Bus Operator/images/image-not-avail.png';
 
     fullName.value = myData.fullName || 'Loading...';
     email.value = myData.email || 'Loading...';
     contact.value = myData.phoneNum || 'Loading...';
     profilePhoto.src = myData.imageUrl || imgPlaceHolder;
-}
+    coopImage.src = myData.imgUrl || imgPlaceHolde2;
+
+     // Fetch additional data from Bus Cooperative
+     const ref = database.ref(`${DBPaths.BUS_COOP}`);
+     ref.once('value', (coopSnapshot) => {
+         coopSnapshot.forEach((coop) => {
+             const coopData = coop.val();
+             if (coopData.companyName === myData.companyName) {
+                 // Populate additional data
+                 coopImage.src = coopData.imgUrl || '';
+                 companyAddressElement.textContent = coopData.companyAddress || 'Unknown Address';
+                 companyDescriptionElement.textContent = coopData.companyDescription || 'No description available';
+             }
+         });
+     });
+ }
 
 function saveProfileInDb() {
 
-    const isConfirmed = window.confirm('Make sure all information are correct!')
     const profilePicInput = document.getElementById('addProfilePicBtn');
+    const profileFullname = document.getElementById('profileFullname');
+    const profileEmail = document.getElementById('profileEmail');
+    const profileContact = document.getElementById('profileContact');
 
     showLoader();
 
-    if (isConfirmed) {
         if (profilePicInput && (profilePicInput.files.length === 0 || profilePicInput.value === '')) {
             updateProfile(myData.imageUrl);
         } else {
             uploadProfilePhoto();
         }
 
-        // Check if all inputs are empty
-        if (oldPassword.value === '' && newPassword.value === '' && confirmPassword.value === '') {
-            hideLoader();
-            return;
+        // Check if elements exist before accessing their values
+         if (profileFullname && profileEmail && profileContact) {
+            const fullname = profileFullname.value;
+            const email = profileEmail.value;
+            const contact = profileContact.value;
+        // Proceed with saving profile data
+        } else {
+            console.error("One or more profile input elements not found.");
         }
-        else {
-            // Check if old password matches the saved password
-            if (oldPassword.value != '' && newPassword.value === '' && confirmPassword.value === '') {
-                alert('Please enter new password.');
-                hideLoader();
-                return;
-            }
-
-            if (oldPassword.value !== myData.password) {
-                alert('Old password does not match.');
-                hideLoader();
-                return;
-            }
-
-            // Check if new password matches the confirm password
-            if (newPassword.value !== confirmPassword.value) {
-                alert('New password and confirm password do not match.');
-                hideLoader();
-                return;
-            }
-
-            savePassword(newPassword.value);
-        }
-    }
-
 
     hideLoader();
-
 }
 
 function uploadProfilePhoto() {
@@ -152,7 +147,7 @@ function updateProfile(url) {
 
                 sessionStorage.setItem('currentUser', JSON.stringify(myData));
                 fillProfile();
-                alert('Profile updated!')
+                alert('Profile updated successfully!')
             })
             .catch(error => {
                 console.error('Error updating multiple fields:', error);
@@ -160,30 +155,28 @@ function updateProfile(url) {
 
     }
 
-
-
 }
 
-function savePassword(newPassword) {
+// function savePassword(newPassword) {
 
-    const id = myData.key;
+//     const id = myData.key;
 
-    const data = {
-        password: newPassword,
-    };
+//     const data = {
+//         password: newPassword,
+//     };
 
-    const userRef = firebase.database().ref(`${DBPaths.BUS_OPS}/${id}`);
-    userRef.update(data)
-        .then(() => {
-            myData.password = data.password;
-            sessionStorage.setItem('currentUser', JSON.stringify(myData));
+//     const userRef = firebase.database().ref(`${DBPaths.BUS_OPS}/${id}`);
+//     userRef.update(data)
+//         .then(() => {
+//             myData.password = data.password;
+//             sessionStorage.setItem('currentUser', JSON.stringify(myData));
 
-            alert('Password updated!')
-        })
-        .catch(error => {
-            console.error('Change Password Error:', error);
-        });
-}
+//             alert('Password updated!')
+//         })
+//         .catch(error => {
+//             console.error('Change Password Error:', error);
+//         });
+// }
 
 function showLoader() {
     const loader = document.querySelector('.loader-container');

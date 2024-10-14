@@ -35,7 +35,7 @@ label {
 
 input[type="text"],
 input[type="email"],
-input[type="password"] {
+input[type="contact"] {
     width: calc(100% - 40px);
     padding: 8px;
     border: 1px solid #ccc;
@@ -48,7 +48,7 @@ input[type="email"][readonly] {
 }
 
 #updateProfileButton {
-    display: block;
+    display: inline-block;
     margin: 20px auto;
     padding: 10px 20px;
     background-color: #9488a6;
@@ -59,6 +59,65 @@ input[type="email"][readonly] {
     font-size: 16px;
 }
 
+
 #updateProfileButton:hover {
     background-color: #0056b3;
+}
+
+.company-info-container {
+    border: 1px solid #ccc;
+    padding: 8px;
+    border-radius: 5px;
+    background-color: #ffffff;
+    width: calc(100% - 40px);
+    font-size: 16px;
+    display: inline-block; 
+    text-decoration: none;
+}
+
+/* .company-info-container {
+    border: 1px solid #ccc;
+    padding: 8px;
+    border-radius: 5px;
+    background-color: #ffffff;
+    width: calc(100% - 40px);
+    font-size: 16px;
+    text-align: left; /* Align text to the left */
+
+/* .company-address-text,
+.company-description-text {
+    display: block; 
+} */
+
+.company-address-text,
+.company-description-text {
+    display: block;
+    width: 100%;
+    text-decoration: none; /* Ensure no text decoration */
+    border: none; /* Remove any potential border */
+}
+
+.lighter-label {
+    opacity: 0.6; /* Adjust the value to achieve the desired lightness */
+    color: #000; /* Ensure the text color is still readable */
+}
+
+.coop-image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+    border: 2px solid #ccc; /* Adds a border to the container */
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds a shadow for a nicer look */
+    border-radius: 10px; /* Rounds the corners slightly */
+    height: 220px; /* Sets the height of the container */
+    overflow: hidden; /* Ensures the image fits within the container */
+}
+
+.coop-image-container img {
+    width: auto;
+    height: 100%; /* Adjusts the image height to fit the container */
+    object-fit: cover;
+    border: none; /* Removes border around the image */
 }

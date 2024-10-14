@@ -16,72 +16,75 @@
     <link rel="stylesheet" href="/Common/common.css" />
     <link rel="stylesheet" href="./styles/table.css" />
 </head>
-
-<body>
-    <div class="loader-container">
-        <div class="loader"></div>
-    </div>
-
-    <div class="wrapper">
-        <div class="sidebar">
-            <h2>BusYan</h2>
-
-            <div class="user-detail">
-                <img src="./images/profile.png" alt="profile" />
-                <label for="user name"><strong>Loading...</strong></label>
-                <label for="user role">Loading...</label>
-            </div>
-
-            <ul id="sidebarUl">
-                <li>
-                    <a href="#" data-target="dashboard"><i
-                            class="fas fa-light fa-table-cells"></i><span>Dashboard</span></a>
-                </li>
-                <li>
-                    <a href="#" data-target="notification"><i
-                            class="fas fa-regular fa-bell "></i><span>Notification</span></a>
-                </li>
-                <li>
-                    <a href="#" data-target="manage-bus"><i class="fas a-solid fa-bus-simple "></i></i><span>Manage
-                            Bus</span></a>
-                </li>
-                <li>
-                    <a href="#" data-target="manage-people"><i class="fas fa-light fa-user-group "></i></i><span>Manage
-                            People</span></a>
-                </li>
-                <li class="selected-menu">
-                    <a href="#" data-target="bus-schedule"><i
-                            class="fas fa-regular fa-calendar-days selected-menu-text"></i></i><span
-                            class="selected-menu-text">Bus Schedule</span></a>
-                </li>
-                <li>
-                    <a href="#" data-target="manage-job"><i class="fas fa-solid fa-briefcase"></i></i><span>Manage
-                            Job</span></a>
-                </li>
-                <li>
-                    <a href="#" data-target="applicants"><i
-                            class="fas fa-solid fa-user-plus"></i><span>Applicants</span></a>
-                </li>
-                <li>
-                    <a href="#" data-target="profile"><i class="fas fa-regular fa-user"></i><span>Profile</span></a>
-                </li>
-                <li>
-                    <a href="#" data-target="about-us"><i class="fas fa-regular fa-circle-info"></i><span>About
-                            Us</span></a>
-                </li>
-                <li>
-                    <a href="#" data-target="help-center"><i class="fas fa-solid fa-circle-question"></i></i><span>Help
-                            Center</span></a>
-                </li>
-            </ul>
-
-            <div class="logout">
-                <a href="#" data-target="logout" id="logoutBtn">
-                    <i class="fas fa-solid fa-right-from-bracket"></i>
-                    <span>Logout</span>
-                </a>
-            </div>
-        </div>
+<style>
+    
+    .sidebar {
+    
+        font-size: 12px;
+        bottom:0 !important;
+        height: 100% !important;
+        overflow-y: auto !important;
+        
+    }
+    .sidebar::-webkit-scrollbar {
+    width: 0; /* Remove scrollbar space */
+    background: transparent; /* Optional: just to hide the scrollbar */
+  }
+    .content-container{
+        overflow-y: auto;
+    }
+  </style>
+  <body>
+      <div class="loader-container">
+          <div class="loader"></div>
+      </div>
+  
+      <div class="wrapper">
+          <div class="sidebar">
+            <h3 id="companyName" style="font-size: 20px;color:azure;text-align: center;margin-bottom: 10px;">Loading...</h3>
+  
+              <div class="user-detail">
+                  <img src="./images/profile.png" alt="profile" />
+                  <label for="user name"><strong>Loading...</strong></label>
+                  <label for="user role">Loading...</label>
+              </div>
+  
+              <ul id="sidebarUl">
+                  <li>
+                      <a href="#" data-target="dashboard"><i class="fas fa-light fa-table-cells"></i><span>Dashboard</span></a>
+                  </li>
+                  <li >
+                      <a href="#" data-target="notification"><i class="fas fa-regular fa-bell selected-menu-text"></i><span >Notification</span></a>
+                  </li>
+                  <li >
+                      <a href="#" data-target="manage-bus"><i class="fas a-solid fa-bus-simple "></i></i><span  >Manage Bus</span></a>
+                  </li>
+                  <li >
+                      <a href="#" data-target="manage-people"><i class="fas fa-light fa-user-group "></i></i><span >Manage People</span></a>
+                  </li>
+                  <li class="selected-menu">
+                      <a href="#" data-target="bus-schedule"><i class="fas fa-regular fa-calendar-days selected-menu-text"></i></i><span class="selected-menu-text">Bus Schedule</span></a>
+                  </li>
+                  
+                  <li>
+                      <a href="#" data-target="profile"><i class="fas fa-regular fa-user"></i><span >Profile</span></a>
+                  </li>
+                  <li>
+                      <a href="#" data-target="about-us"><i class="fas fa-regular fa-circle-info"></i><span>About Us</span></a>
+                  </li>
+                  <li>
+                      <a href="#" data-target="help-center"><i class="fas fa-solid fa-circle-question"></i></i><span>Help Center</span></a>
+                  </li>
+                  <li>
+                    <a href="#" data-target="logout" id="logoutBtn">
+                      <i class="fas fa-solid fa-right-from-bracket"></i>
+                      <span>Logout</span>
+                    </a>
+                  </li>
+              </ul>
+  
+              
+          </div>
 
         <div class="content-container">
 
@@ -106,50 +109,61 @@
                     <div id="busScheduleModal" class="modal">
                         <!-- Modal content -->
                         <div class="modal-content">
-                            <div
-                                style="display: flex; flex-direction: row; width: 100%; justify-content: space-between;">
+                            <div style="display: flex; flex-direction: row; width: 100%; justify-content: space-between;">
                                 <span class="busSchedFormCloseBtn">&times;</span>
                             </div>
-
                             <span class="modal-title">Bus Schedule</span>
                             <div class="divider"></div>
-
-                            <form id="addBusSchedForm" style="width: 80%;">
+                            <form id="addBusSchedForm" style="width: 65%;">
                                 <div class="bus-form-container">
-                                    <div class="column" style="gap: 20px;">
-                                        <label for="bus">Bus:</label>
-                                        <label for="busDriver">Bus Driver:</label>
-                                        <label for="conductor">Conductor:</label>
-                                        <label for="startDate">Start Date:</label>
-                                        <label for="endDate">End Date:</label>
-                                        <label for="startTime">Start Time:</label>
-                                        <label for="endTime">End Time:</label>
+                                    <div class="column" style="gap: 10px; " >
+                                        <label for="bus">Bus Plate Number:</label>
+                                        <label for="driverFullname">Driver Fullname:</label>
+                                        <label for="conductorFullname">Conductor Fullname:</label>
+                                        <label for="startDate" style ="margin-top: 10px;">Start Date:</label>
+                                        <label for="endDate" style ="margin-top: 13px;">End Date:</label>
+                                        <label for="startTime" style ="margin-top: 15px;">Start Time:</label>
+                                        <label for="endTime" style ="margin-top: 17px;">End Time:</label>
+                                        
+                                        
                                     </div>
-                                    
-                                    <div class="column">
-                                        <input type="text" id="bus" name="bus" placeholder="Bus ID" required>
-                                        <input type="text" id="busDriver" name="bus_driver" placeholder="Bus Driver ID" required>
-                                        <input type="text" id="conductor" name="conductor" placeholder="Conductor ID">
+                                    <div class="column" style="gap: 8px;">
+                                        
+                                        
+                                        <select id="bus" name="bus" style="height: 30px; margin-top: -10px; margin-bottom: 10px;" required>
+                                            <option value=""  selected>Select bus</option>
+                                            <!-- Options will be populated dynamically using JavaScript -->
+                                        </select>
+                                        
+                                        <select id="driverFullname" name="driver_fullname" style="height: 30px; margin-top: -10px; margin-bottom: 10px;" required>
+                                            <option value=""  selected>Select driver</option>
+                                            <!-- Options will be populated dynamically using JavaScript -->
+                                        </select>
+                                        
+                                        <select id="conductorFullname" name="conductor_fullname" style="height: 30px; margin-top: -10px; margin-bottom: 10px;" required>
+                                            <option value=""  selected>Select conductor</option>
+                                            <!-- Options will be populated dynamically using JavaScript -->
+                                        </select>
+                                        
+                                        
+                                        
                                         <input type="date" id="startDate" name="start_date" required>
                                         <input type="date" id="endDate" name="end_date" required>
                                         <input type="time" id="startTime" name="start_time" required>
                                         <input type="time" id="endTime" name="end_time" required>
+                                        
+                                        
+                                       
                                     </div>
-                                    
-                                    <div class="column">
-                                        <input type="text" id="routeNo" name="route_no" placeholder="Bus Code" required>
-                                        <input type="text" id="driverFullname" name="driver_fullname" placeholder="Fullname" required>
-                                        <input type="text" id="conductorFullname" name="conductor_fullname" placeholder="Fullname">
-                                    </div>
-                                    
                                 </div>
                                 <div style="display: flex; justify-content: center;">
                                     <button id="saveBusSchedule" type="submit">Save</button>
                                 </div>
                             </form>
-
                         </div>
                     </div>
+                    
+                    
 
                 </div>
 

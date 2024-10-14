@@ -1,8 +1,6 @@
 import firebaseConfig from '/CONFIG.js';
 import { DBPaths } from '/Bus Operator/js/DB.js';
 import { convertToPascal, getCurrentDateTimeInMillis } from '/Bus Operator/utils/Utils.js';
-// const { Map } = await google.maps.importLibrary('maps');
-// const { AdvancedMarkerElement } = await google.maps.importLibrary('marker');
 
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
@@ -179,19 +177,27 @@ function generateBusesTables(busDriverData) {
 }
 
 function saveBusData(event) {
-    event.preventDefault()
+    event.preventDefault();
 
     const isConfirmed = window.confirm("Are you sure all information are correct?");
 
     if (isConfirmed) {
+        // Check if plate number already exists
+        if (action === 'Add' && plateNumberExists(plateNumber.value)) {
+            alert('The plate number already exists');
+            return; // Stop execution if plate number exists
+        }
+
         showLoader();
         saveDataInDb();
     }
 }
 
+function plateNumberExists(plateNumber) {
+    return busDriverArray.some(bus => bus.plateNumber.toLowerCase() === plateNumber.toLowerCase());
+}
+
 function saveDataInDb() {
-
-
     if (action === 'Add') {
         const id = getCurrentDateTimeInMillis();
         const BusDetails = {
@@ -209,7 +215,7 @@ function saveDataInDb() {
         const busDetailsRef = database.ref(`${DBPaths.BUS_DETAILS}/${id}`);
         busDetailsRef.set(BusDetails)
             .then(() => {
-                alert('Bus Added Succesfully!');
+                alert('Bus Added Successfully!');
                 hideAddBusForm();
                 generateBuses();
             })
@@ -233,7 +239,7 @@ function saveDataInDb() {
         const busDetailsRef = firebase.database().ref(`${DBPaths.BUS_DETAILS}/${id}`);
         busDetailsRef.update(BusDetails)
             .then(() => {
-                alert('Bus Updated Succesfully!');
+                alert('Bus Updated Successfully!');
                 hideAddBusForm();
                 generateBuses();
             })
@@ -323,9 +329,7 @@ window.onclick = function (event) {
     }
 }
 
-
-
-//ABOUT MAPS
+// ABOUT MAPS
 const googleMap = document.getElementById("googleMap");
 const bounds = new google.maps.LatLngBounds();
 let allCoor = [];
@@ -420,7 +424,7 @@ function getLiveCoordinates(dataRef, dataType) {
 
             const coordinates = {
                 dataValue: dataValue,
-                lat: dataValue.lattitude, // Assuming lattitude exists, check for typos
+                lat: dataValue.lattitude, // Assuming latitude exists, check for typos
                 lng: dataValue.longitude, // Assuming longitude exists
                 role: dataType
             };
@@ -429,4 +433,3 @@ function getLiveCoordinates(dataRef, dataType) {
         });
     });
 }
-

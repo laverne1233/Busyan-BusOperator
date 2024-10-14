@@ -102,15 +102,61 @@ export function fillUserData( ) {
     if (myData === undefined || myData === null) {
         window.location.href = './../../login.html';
     }
+
+    // if (!userDetail) {
+    //     console.error('User detail section not found.');
+    //     return;
+    // }
+
     // Select the elements in the user detail section
     const userDetail = document.querySelector('.user-detail');
     const imgElement = userDetail.querySelector('img');
     const usernameLabel = userDetail.querySelector('label:nth-of-type(1)');
     const roleLabel = userDetail.querySelector('label:nth-of-type(2)');
     const imgPlaceHolder = './images/profile.png';
+    const companyNameElement = document.querySelector('.sidebar h3');
+    const companyAddressElement = document.querySelector('.company-address-text');
+    const companyDescriptionElement = document.querySelector('.company-description-text');
+
+    console.log("myData:", myData);
+
+    if (imgElement) {
+        imgElement.src = myData.userImgSrc || imgPlaceHolder;
+    } else {
+        console.error("Image element not found.");
+    }
+
+    if (usernameLabel) {
+        usernameLabel.textContent = convertToPascal(myData.fullName);
+    } else {
+        console.error("Username label not found.");
+    }
+
+    if (companyNameElement) {
+        companyNameElement.textContent = myData.companyName || 'Unknown Company';
+    } else {
+        console.error("Company name element not found.");
+    }
 
     // Set the values
     imgElement.src = myData.imageUrl || imgPlaceHolder;
     usernameLabel.textContent = convertToPascal(myData.fullName);
     roleLabel.textContent = 'Bus Operator';
+
+    if (companyAddressElement) {
+        companyAddressElement.textContent = myData.companyAddress || 'Unknown Address';
+    } else {
+        console.error("Company address element not found.");
+    }
+
+    
+    if (companyDescriptionElement) {
+        companyDescriptionElement.textContent = myData.companyDescription || 'No description available';
+    } else {
+        console.error("Company description element not found.");
+    }
+
+    console.log("Company Address:", myData.companyAddress);
+    console.log("Company Description:", myData.companyDescription);
+
 }

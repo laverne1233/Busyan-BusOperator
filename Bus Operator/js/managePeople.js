@@ -259,14 +259,28 @@ function addEmp() {
     showAddBusForm();
 }
 
-function saveEmpData(event) {
+async function saveEmpData(event) {
     event.preventDefault();
 
     const isConfirmed = window.confirm("Are you sure all information are correct?");
 
     if (isConfirmed && empDetailsAreValid()) {
-
         showLoader();
+
+        const emailExists = await checkIfEmailOrPhoneExists(empEmailInput.value, 'email');
+        const phoneExists = await checkIfEmailOrPhoneExists(empContactNumInput.value, 'phoneNum');
+
+        if (emailExists) {
+            alert('Email already exists.');
+            hideLoader();
+            return;
+        }
+
+        if (phoneExists) {
+            alert('Contact number already exists.');
+            hideLoader();
+            return;
+        }
 
         if (action === 'Add') {
             uploadEmpImage();
@@ -275,6 +289,24 @@ function saveEmpData(event) {
             validateImage();
         }
     }
+}
+
+function checkIfEmailOrPhoneExists(value, type) {
+    return new Promise((resolve, reject) => {
+        const busDriverRef = database.ref(`${DBPaths.EMPLOYEES}`);
+        busDriverRef.once('value', (snapshot) => {
+            let exists = false;
+            snapshot.forEach((busDriver) => {
+                const empData = busDriver.val();
+                if ((type === 'email' && empData.email === value) || (type === 'phoneNum' && empData.phoneNum === value)) {
+                    exists = true;
+                }
+            });
+            resolve(exists);
+        }, (error) => {
+            reject(error);
+        });
+    });
 }
 
 function uploadEmpImage() {

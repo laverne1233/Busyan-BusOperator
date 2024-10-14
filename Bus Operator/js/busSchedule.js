@@ -1,9 +1,7 @@
-
 import { convertToMilitaryTime, convertTo12Hour, getCurrentDate, getCurrentDateTimeInMillis } from '/Bus Operator/utils/Utils.js';
 import { DBPaths } from '/Bus Operator/js/DB.js';
 import firebaseConfig from '/CONFIG.js';
 import NotifType from '/Bus Operator/utils/NotifTypes.js';
-
 
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
@@ -18,16 +16,14 @@ const busScheduleModal = document.getElementById("busScheduleModal");
 const busSchedFormCloseBtn = document.querySelector(".busSchedFormCloseBtn");
 const addBusSchedForm = document.getElementById("addBusSchedForm");
 const busInput = document.getElementById("bus");
-const busDriverInput = document.getElementById("busDriver");
-const conductorInput = document.getElementById("conductor");
+const driverFullnameInput = document.getElementById("driverFullname");
+const conductorFullnameInput = document.getElementById("conductorFullname");
 const startDateInput = document.getElementById("startDate");
 const endDateInput = document.getElementById("endDate");
 const startTimeInput = document.getElementById("startTime");
 const endTimeInput = document.getElementById("endTime");
 
-const routeNoInput = document.getElementById("routeNo");
-const driverFullnameInput = document.getElementById("driverFullname");
-const conductorFullnameInput = document.getElementById("conductorFullname");
+
 
 let action;
 let busSchedArray;
@@ -41,6 +37,8 @@ searchBusSchedInput.addEventListener('input', handleSearchBusSched);
 
 function init() {
     generateBusSchedules();
+    fetchBusPlateNumbers();
+    fetchEmployeeNames();
 };
 
 function generateBusSchedules() {
@@ -49,23 +47,18 @@ function generateBusSchedules() {
     const busSchedRef = database.ref(`${DBPaths.BUS_SCHED}`);
     busSchedArray = [];
 
-    busSchedRef.once('value',
-        (snapshot) => {
-            snapshot.forEach((busSched) => {
+    busSchedRef.once('value', (snapshot) => {
+        snapshot.forEach((busSched) => {
+            const busSchedKey = busSched.key;
+            const busSchedData = busSched.val();
+            busSchedData["key"] = busSchedKey;
 
-                const busSchedKey = busSched.key;
-                const busSchedData = busSched.val();
-                busSchedData["key"] = busSchedKey;
-
-                if (busSchedData.companyId === myData.companyId) {
-                    busSchedArray.push(busSchedData);
-                    createBusSchedTables(busSchedData);
-                }
-
-            });
-        }
-    )
-
+            if (busSchedData.companyId === myData.companyId) {
+                busSchedArray.push(busSchedData);
+                createBusSchedTables(busSchedData);
+            }
+        });
+    });
 }
 
 function handleSearchBusSched() {
@@ -73,8 +66,7 @@ function handleSearchBusSched() {
 
     const searchTerm = searchBusSchedInput.value.toLowerCase().trim();
 
-    const results = busSchedArray.filter(item =>
-        item.driverFullname.toLowerCase().includes(searchTerm));
+    const results = busSchedArray.filter(item => item.driverFullname.toLowerCase().includes(searchTerm));
 
     results.forEach(result => {
         createBusSchedTables(result);
@@ -82,15 +74,14 @@ function handleSearchBusSched() {
 }
 
 function createBusScheduleTableHeaders() {
-
     busSchedTable.innerHTML = "";
     const tr = document.createElement("tr");
 
-    // Array of column headers
     const headers = [
-        "Bus ID no.",
+        "Bus Plate Number",
         "Bus Driver",
-        "Ass. Conductor",
+        "Bus Conductor",
+        "Bus Code",
         "Start Date",
         "End Date",
         "Start Time",
@@ -98,7 +89,6 @@ function createBusScheduleTableHeaders() {
         "Actions"
     ];
 
-    // Create <th> elements for each column header and append them to the <tr> element
     headers.forEach(headerText => {
         const th = document.createElement("th");
         th.textContent = headerText;
@@ -109,19 +99,29 @@ function createBusScheduleTableHeaders() {
 }
 
 function createBusSchedTables(busSchedData) {
-
-
     const row = document.createElement("tr");
 
-    const busIdNoTd = document.createElement("td");
-    busIdNoTd.textContent = busSchedData.bus;
+    const busPlateNumberTd = document.createElement("td");
+    const busDetailsRef = database.ref(`${DBPaths.BUS_DETAILS}/${busSchedData.bus}`);
+    busDetailsRef.once('value', (snapshot) => {
+        const busData = snapshot.val();
+        busPlateNumberTd.textContent = busData ? busData.plateNumber : 'N/A';
+    });
 
     const busDriverTd = document.createElement("td");
-    busDriverTd.textContent = busSchedData.driverFullname;
-
+    const employees = database.ref(`${DBPaths.EMPLOYEES}/${busSchedData.driverFullname}`);
+    employees.once('value', (snapshot) => {
+        const driverFullnameData = snapshot.val();
+        busDriverTd.textContent = driverFullnameData ? driverFullnameData.fullName : 'N/A';
+    }); 
+    
     const assConductorTd = document.createElement("td");
-    assConductorTd.textContent = busSchedData.conductorFullname === '' ?
-        'N/A' : busSchedData.conductorFullname;
+    const conductorRef = database.ref(`${DBPaths.EMPLOYEES}/${busSchedData.conductorFullname}`);
+    conductorRef.once('value', (snapshot) => {
+        const conductorData = snapshot.val();
+        assConductorTd.textContent = conductorData ? conductorData.fullName : 'N/A';
+    });
+
 
     const startDateTd = document.createElement("td");
     startDateTd.textContent = busSchedData.startDate;
@@ -149,13 +149,20 @@ function createBusSchedTables(busSchedData) {
     const deleteIcon = document.createElement("i");
     deleteIcon.classList.add("fa-solid", "fa-eraser", "delete");
     deleteLink.appendChild(deleteIcon);
+    const busCodeTd = document.createElement("td");
+    const busCodeRef = database.ref(`${DBPaths.BUS_DETAILS}/${busSchedData.bus}`);
+    busCodeRef.once('value', (snapshot) => {
+        const busData = snapshot.val();
+        busCodeTd.textContent = busData ? busData.busCode : 'N/A';
+    });
 
     actionsTd.appendChild(editLink);
     actionsTd.appendChild(deleteLink);
 
-    row.appendChild(busIdNoTd);
+    row.appendChild(busPlateNumberTd);
     row.appendChild(busDriverTd);
     row.appendChild(assConductorTd);
+    row.appendChild(busCodeTd);
     row.appendChild(startDateTd);
     row.appendChild(endDateTd);
     row.appendChild(startTimeTd);
@@ -174,34 +181,37 @@ function createBusSchedTables(busSchedData) {
 
 function addBusSched() {
     action = 'Add';
+    // Clear all input fields
     busInput.value = "";
-    busDriverInput.value = "";
-    conductorInput.value = "";
+    driverFullnameInput.value = "";
+    conductorFullnameInput.value = "";
     startDateInput.value = "";
     endDateInput.value = "";
     startTimeInput.value = "";
     endTimeInput.value = "";
 
-    routeNoInput.value = "";
-    driverFullnameInput.value = "";
-    conductorFullnameInput.value = "";
+    
+    
+
+    // Set default value for bus input
+    const defaultBusPlateNumber = busInput.options[0].value;
+    busInput.value = defaultBusPlateNumber;
+
     showBusSchedForm();
 }
+
 
 function editBusSched(busSchedData) {
     action = 'Edit';
     busSchedId = busSchedData.key;
     busInput.value = busSchedData.bus;
-    busDriverInput.value = busSchedData.busDriver;
-    conductorInput.value = busSchedData.conductor;
+    driverFullnameInput.value = busSchedData.driverFullname;
+    conductorFullnameInput.value = busSchedData.conductorFullname;
     startDateInput.value = busSchedData.startDate;
     endDateInput.value = busSchedData.endDate;
     startTimeInput.value = convertToMilitaryTime(busSchedData.startTime);
     endTimeInput.value = convertToMilitaryTime(busSchedData.endTime);
-
-    routeNoInput.value = busSchedData.routeNo;
-    driverFullnameInput.value = busSchedData.driverFullname;
-    conductorFullnameInput.value = busSchedData.conductorFullname;
+    
     showBusSchedForm();
 }
 
@@ -225,6 +235,24 @@ function deleteBusSched(busSchedData) {
 function saveBusSchedData(event) {
     event.preventDefault();
 
+    const startDate = new Date(startDateInput.value);
+    const endDate = new Date(endDateInput.value);
+    const currentDate = new Date();
+    
+    // Validation for start date ahead of end date
+    if (startDate > endDate) {
+        alert("Start date cannot be ahead of end date.");
+        return;
+    }
+
+    // Validation for start date earlier than the current date (for adding new bus schedule)
+    if (action === 'Add' && startDate < currentDate) {
+        // No need to show an error message, just proceed
+    } else if (action !== 'Edit' && startDate < currentDate) {
+        alert("Start date cannot be earlier than the current date.");
+        return;
+    }
+
     const isConfirmed = window.confirm("Are you sure all information are correct?");
 
     if (isConfirmed) {
@@ -236,24 +264,31 @@ function saveBusSchedData(event) {
         if (action === 'Edit') {
             updateBusSchedule();
         }
+
+        // Reload the page after saving
+        setTimeout(function() {
+            location.reload();
+        }, 2000); // Reload after 2 seconds (adjust as needed)
     }
 
     hideLoader();
 }
 
-function createBusSchedule() {
 
+
+
+
+
+
+function createBusSchedule() {
     const busDetails = {
         bus: busInput.value,
-        busDriver: busDriverInput.value,
-        conductor: conductorInput.value,
+        driverFullname: driverFullnameInput.value,
+        conductorFullname: conductorFullnameInput.value,
         startDate: startDateInput.value,
         endDate: endDateInput.value,
         startTime: convertTo12Hour(startTimeInput.value),
         endTime: convertTo12Hour(endTimeInput.value),
-        routeNo: routeNoInput.value,
-        driverFullname: driverFullnameInput.value,
-        conductorFullname: conductorFullnameInput.value,
         datetimeAdded: new Date().toISOString(),
         busOperatorId: myData.key,
         companyName: myData.companyName,
@@ -267,7 +302,6 @@ function createBusSchedule() {
 
     busSchedRef.set(busDetails)
         .then(() => {
-
             const loginDetailsData = {
                 dateCreated: getCurrentDate(),
                 message: "New Bus Schedule Added",
@@ -285,13 +319,11 @@ function createBusSchedule() {
                     console.log(busDetails);
                 })
                 .catch(error => {
-                    // An error occurred while setting data
                     console.error('Error setting data:', error);
                 });
 
         })
         .catch(error => {
-            // An error occurred while setting data
             console.error('Error setting data:', error);
         });
 
@@ -299,21 +331,17 @@ function createBusSchedule() {
 }
 
 function updateBusSchedule() {
-
     const busDetails = {
         bus: busInput.value,
-        busDriver: busDriverInput.value,
-        conductor: conductorInput.value,
+        driverFullname: driverFullnameInput.value,
+        conductorFullname: conductorFullnameInput.value,
         startDate: startDateInput.value,
         endDate: endDateInput.value,
         startTime: convertTo12Hour(startTimeInput.value),
         endTime: convertTo12Hour(endTimeInput.value),
-        routeNo: routeNoInput.value,
-        driverFullname: driverFullnameInput.value,
-        conductorFullname: conductorFullnameInput.value,
+        
         busOperatorId: myData.key
     };
-
 
     const busSchedRef = firebase.database().ref(`${DBPaths.BUS_SCHED}/${busSchedId}`);
     busSchedRef.update(busDetails)
@@ -335,7 +363,7 @@ function hideBusSchedForm() {
 }
 
 function showLoader() {
-    loader.style.display = 'flex'
+    loader.style.display = 'flex';
 }
 
 function hideLoader() {
@@ -343,4 +371,91 @@ function hideLoader() {
         loader.style.display = "none";
     }, 2000); // 3000 milliseconds = 3 seconds
 }
+
+// Fetch existing bus plate numbers within the same company and populate select options
+function fetchBusPlateNumbers() {
+    const busRef = database.ref(`${DBPaths.BUS_DETAILS}`);
+    busRef.once('value', (snapshot) => {
+        const busDetails = snapshot.val();
+        const myCompanyId = myData.companyId; // Assuming myData contains company information
+        const busSelect = document.getElementById('bus');
+        busSelect.innerHTML = ''; // Clear existing options
+
+        for (const key in busDetails) {
+            if (busDetails.hasOwnProperty(key)) {
+                const { idNo, plateNumber, companyId } = busDetails[key];
+                if (companyId === myCompanyId) { // Filter by company ID
+                    const option = document.createElement('option');
+                    option.value = idNo; // Store idNo as the value
+                    option.textContent = plateNumber; // Display plateNumber as the text
+                    busSelect.appendChild(option);
+                }
+            }
+        }
+    });
+}
+
+
+
+// Populate select options with bus plate numbers
+function populateBusSelectOptions(busPlateNumbers) {
+    const busSelect = document.getElementById('bus');
+    busSelect.innerHTML = ''; // Clear existing options
+
+    busPlateNumbers.forEach((plateNumber) => {
+        const option = document.createElement('option');
+        option.value = plateNumber;
+        option.textContent = plateNumber;
+        busSelect.appendChild(option);
+    });
+}
+
+function fetchEmployeeNames() {
+    const employeeRef = database.ref(`${DBPaths.EMPLOYEES}`);
+    employeeRef.once('value', (snapshot) => {
+        const drivers = [];
+        const conductors = [];
+        snapshot.forEach((employee) => {
+            const employeeData = employee.val();
+            if (employeeData.companyId === myData.companyId) {
+                if (employeeData.type === 'Driver') {
+                    drivers.push({ id: employee.key, fullName: employeeData.fullName });
+                } else if (employeeData.type === 'Conductor') {
+                    conductors.push({ id: employee.key, fullName: employeeData.fullName });
+                }
+            }
+        });
+        populateDriverSelectOptions(drivers); // Call the function to populate the select options for drivers
+        populateConductorSelectOptions(conductors); // Call the function to populate the select options for conductors
+    });
+}
+
+function populateConductorSelectOptions(employees) {
+    const conductorSelect = document.getElementById('conductorFullname');
+    conductorSelect.innerHTML = ''; // Clear existing options
+
+    employees.forEach((employee) => {
+        const option = document.createElement('option');
+        option.value = employee.id; // Store id as the value
+        option.textContent = employee.fullName; // Display fullname as the text
+        conductorSelect.appendChild(option);
+    });
+}
+
+
+
+
+function populateDriverSelectOptions(employees) {
+    const driverSelect = document.getElementById('driverFullname');
+    driverSelect.innerHTML = ''; // Clear existing options
+
+    employees.forEach((employee) => {
+        const option = document.createElement('option');
+        option.value = employee.id; // Store id as the value
+        option.textContent = employee.fullName; // Display fullname as the text
+        driverSelect.appendChild(option);
+    });
+}
+
+
 

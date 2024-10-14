@@ -13,7 +13,10 @@
     overflow-y: auto;
 
 }
-
+#bus-table td:nth-child(5),
+#bus-table td:nth-child(6) {
+    font-size: 12px;
+}
 #bus-table,
 #bus-table td,
 #bus-table th {
